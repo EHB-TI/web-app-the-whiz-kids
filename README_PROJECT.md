@@ -28,6 +28,7 @@
 
 <p>
     Installatie laravel: https://devmarketer.io/learn/setup-laravel-project-cloned-github-com/ 
+    php artisan storage:link
 </p>
 
 <p>Bronnen:</p>
