@@ -7,6 +7,43 @@ Deze website was het project voor Web Integration van Tibo de Munck in samenwerk
 
 # Threat model
 *describe your threat model. One or more architectural diagram expected. Also a list of the principal threats and what you will do about them*
+
+## Threats:
+
+### Site Admin-account, High Risk
+Risico ligt vooral in pogingen om brute-force het wachtwoord van het account te achterhalen, of indien de de eigenaar van het admin account zijn eigen computer niet goed beschermt tegen ander mogelijk gebruik.
+Oplossingen:
+1. Maximaal aantal login pogingen, indien overschreden timeout van 5 minuten
+2. 32-character lang wachtwoord
+3. "Remember me" functionaliteit uitschakelen
+4. Automatisch uitloggen bij langdurige inactiviteit
+5. Autocomplete van wachtwoord uitschakelen
+6. Back-end waarschuwingssysteem indien er te veel gefaalde pogingen zijn om in te loggen op een admin-account
+7. *Zie onder Combell admin
+
+### Site Editor-account, Low Risk
+Zelfde risico's die aanwezig zijn bij het admin-account, maar bij een doorbraak zal er een veel minder grote impact kunnen worden gemaakt omdat deze accounts tot minder in staat zijn.
+Oplossingen:
+1. Maximaal aantal login pogingen, indien overschreden timeout van 5 minuten
+2. 32-character lang wachtwoord
+3. "Remember me" functionaliteit uitschakelen
+4. Automatisch uitloggen bij langdurige inactiviteit
+5. Autocomplete van wachtwoord uitschakelen
+6. *Zie onder Combell admin
+
+### Combell-Admin/DB-Admin, Medium Risk
+Omdat we plannen om onze webservice te hosten op [Combell](https://www.combell.com/en/), zal dit account ook automatisch de DB-admin worden. Hierom leunen we op de reeds ingebouwde beveiliging die Combell aanbiedt.
+
+Extra voor Site Admin-, Editor-Account en Combell-account:
+1. Er zal op regelmatige basis een back-up worden genomen om ervoor te zorgen dat indien er toch wordt ingebroken op één van deze accounts, niet alle data verloren zal gaan
+
+### External DB injection, Low Risk
+Omdat er toch een aantal forms worden gebruikt op de website wordt dit gezien als een threat, hoewel het [Laravel-Framework](https://laravel.com/) reeds een goede beveiliging aanbiedt hiervoor.
+
+Oplossingen:
+1. Forms beveiligen
+2. Login beveiligen
+
 # Deployment
 *minimally, this section contains a public URL of the app. A description of how your software is deployed is a bonus. Do you do this manually, or did you manage to automate? Have you taken into account the security of your deployment process?*
 # *you may want further sections*
