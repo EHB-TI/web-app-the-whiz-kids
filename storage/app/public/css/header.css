@@ -1,0 +1,12 @@
+.language {
+    height: 20px;
+}
+
+.about-navbar{
+    border-bottom: 1px solid lightgray;
+    margin-bottom: 30px;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}

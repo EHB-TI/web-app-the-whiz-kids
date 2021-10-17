@@ -1,0 +1,98 @@
+.container-fluid {
+    margin-top: 15px;
+}
+
+p {
+    overflow-wrap: break-word;
+}
+
+.edit {
+    position: relative;
+    padding: 20px;
+    padding-top: 60px;
+}
+
+.create {
+    float: right;
+    position: relative;
+    z-index: 10;
+}
+
+.button {
+    display: inline-block;
+}
+
+.event-extra-info {
+    display: inline-block;
+    float: right;
+}
+
+.invalid-feedback {
+    display: block;
+}
+
+.preview-title {
+    border-bottom: 1px solid lightgray;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.event-preview {
+    margin: 0px 10px 20px;
+}
+
+.event-banner {
+    height: 300px;
+    width: 100%;
+    max-width: 100%;
+    object-fit: cover;
+}
+
+.image-title-centered {
+    position: relative;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.centered {
+    font-size: 50px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+}
+
+.bottom-right {
+    font-size: 25px;
+    position: absolute;
+    bottom: 8px;
+    right: 16px;
+    color: white;
+}
+
+.edit-container {
+    margin: 0px 20px;
+}
+
+.btn {
+    margin-bottom: 15px;
+}
+
+.extra-form {
+    border-radius: 20px;
+    border: 2px solid lightblue;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.questions {
+    margin: 20px ;
+}
+
+.category {
+    border-radius: 20px;
+    border: 2px solid lightblue;
+    padding: 10px;
+    margin-bottom: 20px;
+}

@@ -1,0 +1,52 @@
+legend {
+    border-bottom: 1px solid lightgray;
+}
+
+p {
+    overflow-wrap: break-word;
+}
+
+.container-content {
+    margin-top: 30px;
+    margin-bottom: 300px;
+}
+
+.h2-title {
+    border-bottom: 1px solid lightgray;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.event-banner {
+    width: 100%;
+    max-width: 100%;
+    object-fit: cover;
+    height: 600px
+}
+
+.event-img {
+    height: 180px;
+    object-fit: cover;
+}
+
+.image-title-centered {
+    position: relative;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.centered {
+    font-size: 100px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+}
+.bottom-right {
+    font-size: 50px;
+    position: absolute;
+    bottom: 8px;
+    right: 16px;
+    color: white;
+}

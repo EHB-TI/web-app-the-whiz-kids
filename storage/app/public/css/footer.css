@@ -1,0 +1,38 @@
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 270px;
+    /* Vertically center the text there */
+    color: lightgray;
+    background-color:#343a40;
+}
+.footer-container {
+    padding-top: 20px;
+}
+
+.footer a {
+    color: gray;
+}
+
+.footer ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.footer ul li{
+    border-bottom: 1px solid gray;
+}
+.footer ul li.last{
+    border-bottom: none;
+}
+
+.footer a:hover {
+    color: lightgray;
+    text-decoration: none;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
