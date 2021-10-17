@@ -26,6 +26,10 @@
     (en ook in de toekomst zo te werk zou gaan).
 </p>
 
+<p>
+    Installatie laravel: https://devmarketer.io/learn/setup-laravel-project-cloned-github-com/ 
+</p>
+
 <p>Bronnen:</p>
 <ul>
     <li><a href="https://getbootstrap.com/">Bootstrap</a></li>
