@@ -6,7 +6,8 @@ Onze beveiliging zal zich op verschillende delen focussen. Het eerste waarop we 
 Deze website was het project voor Web Integration van Tibo de Munck in samenwerking met de overkoepelende studentendienst van de VUB
 
 # Threat model
-![Software Security](https://user-images.githubusercontent.com/46536105/137717074-fbbaf679-fa23-4760-8ddb-8455ab9f8d75.png)
+![Software Security](https://user-images.githubusercontent.com/46536105/137717171-f577bfc0-7948-4f12-9494-bd4b201b76c4.png)
+
 
 ## Threats:
 
