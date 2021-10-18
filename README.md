@@ -6,7 +6,7 @@ Onze beveiliging zal zich op verschillende delen focussen. Het eerste waarop we 
 Deze website was het project voor Web Integration van Tibo de Munck in samenwerking met de overkoepelende studentendienst van de VUB
 
 # Threat model
-*describe your threat model. One or more architectural diagram expected. Also a list of the principal threats and what you will do about them*
+![Software Security](https://user-images.githubusercontent.com/46536105/137717074-fbbaf679-fa23-4760-8ddb-8455ab9f8d75.png)
 
 ## Threats:
 
