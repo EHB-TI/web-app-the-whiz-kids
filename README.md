@@ -9,7 +9,11 @@ Deze website was het project voor Web Integration van Tibo de Munck in samenwerk
 ![Software Security](https://user-images.githubusercontent.com/46536105/137717171-f577bfc0-7948-4f12-9494-bd4b201b76c4.png)
 
 
-## Threats:
+# Threats:
+
+## STRIDE:
+
+## Account Vulnerabilities:
 
 ### Site Admin-account, High Risk
 Risico ligt vooral in pogingen om brute-force het wachtwoord van het account te achterhalen, of indien de de eigenaar van het admin account zijn eigen computer niet goed beschermt tegen ander mogelijk gebruik.
@@ -37,6 +41,8 @@ Omdat we plannen om onze webservice te hosten op [Combell](https://www.combell.c
 
 Extra voor Site Admin-, Editor-Account en Combell-account:
 1. Er zal op regelmatige basis een back-up worden genomen om ervoor te zorgen dat indien er toch wordt ingebroken op één van deze accounts, niet alle data verloren zal gaan
+
+## Other:
 
 ### External DB injection, Low Risk
 Omdat er toch een aantal forms worden gebruikt op de website wordt dit gezien als een threat, hoewel het [Laravel-Framework](https://laravel.com/) reeds een goede beveiliging aanbiedt hiervoor.
