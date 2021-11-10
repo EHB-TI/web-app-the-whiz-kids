@@ -12,7 +12,8 @@ Deze website was het project voor Web Integration van Tibo de Munck in samenwerk
 # Threats:
 
 ## STRIDE:
-![image](https://user-images.githubusercontent.com/46536105/141119600-a7a64f60-a354-490b-a18b-93e070a8c92b.png)
+![image](https://user-images.githubusercontent.com/46536105/141119834-f22436d0-29ec-4bf2-b6e5-78ddc97ad836.png)
+
 
 ## Account Vulnerabilities:
 
