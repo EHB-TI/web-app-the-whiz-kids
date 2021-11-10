@@ -12,6 +12,16 @@ Deze website was het project voor Web Integration van Tibo de Munck in samenwerk
 # Threats:
 
 ## STRIDE:
+	Threads	Solution
+Spoofing	Gehacked website admin account kan een account aanmaken dat sterkt lijkt op een ander account	Spoofing wordt al grotendeel tegengegaan door enkel admin accounts de mogelijkheid te geven om accounts aan te maken. Een gehacked website admin account of een website admin met slechte intenties kan echter wel spoofen, het tegengaan hiervan komt neer op het sterk beveiligen (sterk wachtwoord, niet ingelogd blijven wanneer de site verlaat, pc niet laten openstaan enz.) van het admin account en enkel admins hebben die men vertrouwd. We gaan wel toevoegen dat alle acties gelogd worden op email adress, een nieuw account moet altijd eerst inloggen via het nieuwe email adress en zo kan een admin zich niet voordoen als iemand anders.
+Tampering	Gehacked website admin account of admin met malintenties kan via de website aangemaakte events/users aanpassen en verwijderen.	Een gehacked website admin account of een website admin met slechte intenties kan events & users verwijderen, het tegengaan hiervan komt neer op het sterk beveiligen (sterk wachtwoord, niet ingelogd blijven wanneer de site verlaat, pc niet laten openstaan enz.) van het admin account en enkel admins hebben die men vertrouwd. Andere account met toegang tot bepaalde events kunnen deze ook verwijderen. Het toevoegen van een log zal er voor zorgen dat het duidelijk is wie wat heeft aangepast.
+	Gehacked combell account kan de functionaliteiten en data van de website en databank aanpassen.	Sterk beveiligen van het combell account (sterk wachtwoord, niet ingelogd blijven wanneer de site verlaat, pc niet laten openstaan, 2fa enz.)
+Redupiation	Aanpassen van event en users kunnen worden aangepast zonder dat dit wordt genoteerd	Zoals eerder bij tampering vermeld zal er een log op email/user worden bijgehouden om dit tegen te gaan.
+Information Disclosure	Toegang krijgen tot de combell backend door een combell account te hacken of door als combell gebruiker iemand toegang te geven.	Sterk beveiligen van het combell account (sterk wachtwoord, niet ingelogd blijven wanneer de site verlaat, pc niet laten openstaan, 2fa enz.). Enkel toegang geven aan combell backend aan mensen die dit nodig hebben en die men vertrouwd.
+(D)DOS	Site kan neer worden gehaald door een denial of service attack	Door te werken met combell hebben we alvast een heel goede beveiliging tegen (D)DOS aanvallen.
+Elevation of Privelege	Een gewone gebruiker kan extra rechten krijgen door een admin die deze rechten toe kent	We gaan het onmogelijk maken om een normaal account (editor of viewer) te elevaten naar een admin account. Een admin account mag ook geen andere admin accounts kunnen aanpassen.
+	SQL-Injection kan zorgen voor een ongewenste elevation of privelege	Gegevens uit formulieren testen op SQL-injection voor door te sturen naar de database & Combell shield zal ook een eenvoudige SQL-injection proberen tegen te gaan. 
+![image](https://user-images.githubusercontent.com/46536105/141119600-a7a64f60-a354-490b-a18b-93e070a8c92b.png)
 
 ## Account Vulnerabilities:
 
