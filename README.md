@@ -1,11 +1,11 @@
 # Goal
 De toepassing die wij willen beveiligen is een dynamische website waarop studentenkringen hun evenementen kunnen aanmaken, beheren en dan tonen in een agenda. Beheerders van kringen kunnen de evenementen aanmaken, gewone gebruikers kunnen worden toegevoegd aan een kring en kringen kunnen samenwerken aan evenementen. Ook is er nog een Admin rol die de verschillende kringen en rollen van gebruikers kan beheren, deze functie is voorbehouden voor de hosts van de site.
 # Acceptance criteria
--Als een bezoeker kan ik kan via het front-end alle zichtbare evenement overzichtelijk zien en in detail. Het is niet mogelijk om aan het editor panel te geraken.
--Als een editor kan ik kan ik enkel de evenementen zien in het editor panel van de groep waaraan ik ben toegevoegd. Ik kan nieuwe evenementen aanmaken en de al bestaande events van mijn groep bewerken.
--Als een viewer kan ik enkel de evenementen zien in het editor panel van de groep waaraan ik ben toegevoegd. Ik kan deze evenementen niet bewerken, mijn account kan gezien worden als disabled.
--Als een (website) admin kan ik alle evenementen, gebruikers en de FAQ beheren via het admin panel (uitbreiding op het editor panel). Het is mogelijk als website admin om nieuwe events, users en FAQ toe te voegen, updaten en verwijderen. Het is wel niet mogelijk om als website admin een user te elevaten naar admin, hiervoor dient een nieuw account aangemaakt te worden.
--Als een Combell beheerder kan ik de backend van de website en de database beheren. Zo kan ik de ook aan de logs van de website om een overzicht te kunnen houden over mogelijke gevaren en slechte intenties.
+- Als een bezoeker kan ik kan via het front-end alle zichtbare evenement overzichtelijk zien en in detail. Het is niet mogelijk om aan het editor panel te geraken.
+- Als een editor kan ik kan ik enkel de evenementen zien in het editor panel van de groep waaraan ik ben toegevoegd. Ik kan nieuwe evenementen aanmaken en de al bestaande events van mijn groep bewerken.
+- Als een viewer kan ik enkel de evenementen zien in het editor panel van de groep waaraan ik ben toegevoegd. Ik kan deze evenementen niet bewerken, mijn account kan gezien worden als disabled.
+- Als een (website) admin kan ik alle evenementen, gebruikers en de FAQ beheren via het admin panel (uitbreiding op het editor panel). Het is mogelijk als website admin om nieuwe events, users en FAQ toe te voegen, updaten en verwijderen. Het is wel niet mogelijk om als website admin een user te elevaten naar admin, hiervoor dient een nieuw account aangemaakt te worden.
+- Als een Combell beheerder kan ik de backend van de website en de database beheren. Zo kan ik de ook aan de logs van de website om een overzicht te kunnen houden over mogelijke gevaren en slechte intenties.
 
 *Deze website was het project voor Web Integration van Tibo de Munck in samenwerking met de overkoepelende studentendienst van de VUB.*
 
