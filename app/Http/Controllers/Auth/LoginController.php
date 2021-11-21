@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\EventController;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -36,5 +40,35 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function login(Request $request) {
+        $credentials = $request->validate([
+            "email" => ["required", "email"],
+            "password" => ["required"]
+        ]);
+
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+
+            $user = Auth::user();
+            if($user->role == "admin") {
+                $user->setRememberToken(null);
+                $user->save();
+            }
+
+            $alert = isset($request["remember"]);
+
+            return redirect()->intended("admin")->with(["alert" => $alert]);
+        }
+
+        return back()->withErrors([
+            "email" => "The provided credentials do not match our records."
+        ]);
     }
 }

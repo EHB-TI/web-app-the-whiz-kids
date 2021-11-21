@@ -125,11 +125,11 @@ Route::prefix('admin')->group(function () {
                     Route::get('/users', [UserController::class, 'users'])
                         ->name('users');
 
-                    // add user 
+                    // add user
                     Route::get('/add_user', [UserController::class, 'add_user_load'])
                         ->name('add-user');
 
-                    // post for add user 
+                    // post for add user
                     Route::post('/add_user', [UserController::class, 'add_user'])
                         ->name('add-user-submit');
 
