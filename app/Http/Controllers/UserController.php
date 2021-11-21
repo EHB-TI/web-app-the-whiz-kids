@@ -5,9 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 use App\Models\User;
 use App\Models\Group;
+
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendMail;
 
 use App\Rules\MatchOldPassword;
 use App\Rules\Role;
@@ -44,7 +48,6 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
             'role' => ['required', new Role],
             'group' => ['required', 'exists:groups,id']
         ]);
@@ -55,14 +58,32 @@ class UserController extends Controller
                 ->withInput();
         }
 
+        // Generate random password for user
+        $password = Str::random(16);
+
         // create new user
         User::create([
             'group_id' => $request['group'],
             'name' => $request['name'],
             'email' => $request['email'],
-            'password' => Hash::make($request['password']),
+            'password' => Hash::make($password),
             'role' => $request['role'],
         ]);
+
+        // Send mail to new user
+        $data = (object) [
+            'name' => $request->name,
+            'organisation' => $request->organisation,
+            'description' => $request->description
+        ];
+
+        $data = (object) [
+            'name' => $request->name,
+            'type' => "usercreate",
+            'password' => $password
+        ];
+
+        Mail::to($request->email)->send(new SendMail('better.ge.tracker@gmail.com', $data));
 
         return redirect()->route('admin.users')
             ->with('status', 'User succesfully added!');
@@ -96,7 +117,7 @@ class UserController extends Controller
     {
         $request->validate([
             'current_password' => ['required', new MatchOldPassword],
-            'password' => ['required'],
+            'password' => ['required', 'string', 'min:16'],
             'confirm_password' => ['same:password'],
         ]);
 

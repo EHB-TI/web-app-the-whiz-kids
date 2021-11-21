@@ -53,6 +53,7 @@ class ContactController extends Controller
 
         $data = (object) [
             'name' => $request->name,
+            'type' => "contact",
             'organisation' => $request->organisation,
             'description' => $request->description
         ];
