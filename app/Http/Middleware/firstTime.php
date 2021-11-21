@@ -19,7 +19,7 @@ class FirstTime
     {
         if (Auth::user()->created_at == Auth::user()->updated_at) {
             return redirect()->route('admin.change-password')
-                ->with('status', 'This is your first login, please enter a new password');
+                ->with('status', 'This is your first login, please enter a new password with min 16 characters, number, symbol, upper and lowercase characters.');
         }
 
         return $next($request);

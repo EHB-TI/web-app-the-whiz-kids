@@ -29,6 +29,10 @@ class SendMail extends Mailable
      */
     public function build()
     {
-        return $this->from($this->fromEmail)->replyTo($this->fromEmail, $this->data->name)->subject('New Contact Site')->view('mail.dynamic_template')->with('data', $this->data);
+        if ($this->data->type == "contact") {
+            return $this->from($this->fromEmail)->replyTo($this->fromEmail, $this->data->name)->subject('New Contact Site')->view('mail.dynamic_template_contact')->with('data', $this->data);
+        } elseif ($this->data->type == "usercreate") {
+            return $this->from($this->fromEmail)->replyTo($this->fromEmail, $this->data->name)->subject('Account created')->view('mail.dynamic_template_usercreate')->with('data', $this->data);
+        }
     }
 }
