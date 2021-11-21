@@ -70,8 +70,6 @@ class UserController extends Controller
             'role' => $request['role'],
         ]);
 
-        // Check if user was created
-
         // Send mail to new user
         $data = (object) [
             'name' => $request->name,
@@ -79,9 +77,16 @@ class UserController extends Controller
             'password' => $password
         ];
 
-        Mail::to($request->email)->send(new SendMail('better.ge.tracker@gmail.com', $data));
-
-        // Error if mail isn't send (maybe delete user then?)
+        try {
+            Mail::to($request->email)->send(new SendMail('better.ge.tracker@gmail.com', $data));
+        }
+        catch(\Exception $e){ // Error if mail isn't send & delete created user
+            $user = User::where('email', $request['email'])->first();
+            $user->delete();
+            return redirect()->route('admin.add-user')
+            ->withErrors(['emailService' => [$e->getMessage()]])
+            ->withInput();
+        }
 
         return redirect()->route('admin.users')
             ->with('status', 'User succesfully added!');

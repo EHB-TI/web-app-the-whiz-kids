@@ -100,6 +100,10 @@
                             </button>
                         </div>
                     </div>
+
+                    @error('emailService')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
                 </form>
             </div>
         </div>
