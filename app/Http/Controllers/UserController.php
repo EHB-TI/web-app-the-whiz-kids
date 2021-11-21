@@ -70,13 +70,9 @@ class UserController extends Controller
             'role' => $request['role'],
         ]);
 
-        // Send mail to new user
-        $data = (object) [
-            'name' => $request->name,
-            'organisation' => $request->organisation,
-            'description' => $request->description
-        ];
+        // Check if user was created
 
+        // Send mail to new user
         $data = (object) [
             'name' => $request->name,
             'type' => "usercreate",
@@ -84,6 +80,8 @@ class UserController extends Controller
         ];
 
         Mail::to($request->email)->send(new SendMail('better.ge.tracker@gmail.com', $data));
+
+        // Error if mail isn't send (maybe delete user then?)
 
         return redirect()->route('admin.users')
             ->with('status', 'User succesfully added!');
@@ -117,7 +115,7 @@ class UserController extends Controller
     {
         $request->validate([
             'current_password' => ['required', new MatchOldPassword],
-            'password' => ['required', 'string', 'min:16'],
+            'password' => ['required', 'string', 'min:16', 'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/'],
             'confirm_password' => ['same:password'],
         ]);
 
