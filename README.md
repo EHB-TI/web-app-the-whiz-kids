@@ -17,8 +17,7 @@ De toepassing die wij willen beveiligen is een dynamische website waarop student
 # Threats:
 
 ## STRIDE:
-![image](https://user-images.githubusercontent.com/46536105/141119834-f22436d0-29ec-4bf2-b6e5-78ddc97ad836.png)
-
+![image](https://user-images.githubusercontent.com/46536105/142774835-59f76504-7aa5-42fd-b94f-06fa7ba9164e.png)
 
 ## Account Vulnerabilities:
 
