@@ -25,6 +25,9 @@ class EventController extends Controller
     // index, returns index
     public function index()
     {
+        //Log example
+        $logger->info('Entering event index page!');
+        
         return view('content.index', ['events' => Event::orderBy('event_date_start')->where('visibility', true)->get()]);
     }
 
