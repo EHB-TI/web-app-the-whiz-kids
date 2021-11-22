@@ -88,6 +88,8 @@ class UserController extends Controller
             ->withInput();
         }
 
+        $this->logger->info('User created, email: '.$request['email']);
+
         return redirect()->route('admin.users')
             ->with('status', 'User succesfully added!');
     }
@@ -95,14 +97,17 @@ class UserController extends Controller
     // deletes user
     public function delete($id)
     {
+
         $user = User::find($id);
         if (Auth::user() == $user) {
             return redirect()->route('admin.users')
                 ->with('error', 'Cannot delete self');
         } else {
             // Change all events created by and updated by id to admin? Delete all events of this user? Make button to delete all events of this user?
-
+            $useremail = $user->email;
             $user->delete();
+
+            $this->logger->info('User deleted, email: '.$useremail);
 
             return redirect()->route('admin.users')
                 ->with('status', 'User succesfully deleted!');
@@ -126,6 +131,8 @@ class UserController extends Controller
 
         User::find(auth()->user()->id)->update(['password' => Hash::make($request->password)]);
 
+        $this->logger->info('User updated password, self');
+
         return redirect()->route('admin.index');
     }
 
@@ -138,15 +145,16 @@ class UserController extends Controller
 
     // handles edit user form 
     public function edit_user(Request $request, $id){
-        
         $request->validate([
             'id' => ['required', 'exists:users,id'],
             'role' => ['required', new Role],
             'group' => ['required', 'exists:groups,id'],
         ]);
 
-        User::find($request->id)->update(['role' => $request->role, 'group_id' => $request->group]);
+        $user = User::find($request->id);
+        $user->update(['role' => $request->role, 'group_id' => $request->group]);
 
+        $this->logger->info('User updated role: '.$request->role.' or group: '.$request->group.'from email: '.$user->email);
         return redirect()->route('admin.users');
     }
 }

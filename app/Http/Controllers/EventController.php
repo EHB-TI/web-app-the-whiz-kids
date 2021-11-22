@@ -25,6 +25,7 @@ class EventController extends Controller
     // index, returns index
     public function index()
     {
+        //Log example
         return view('content.index', ['events' => Event::orderBy('event_date_start')->where('visibility', true)->get()]);
     }
 
@@ -48,7 +49,6 @@ class EventController extends Controller
                         $event->paraBody1 = $desc_array[0];
                         break;
                 }
-
                 return view('content.event', ['event' => $event]);
             }
             return redirect()->route('content.index')
@@ -123,6 +123,7 @@ class EventController extends Controller
         $group = Group::find(Auth::user()->group_id);
         $group->events()->attach($event->id);
 
+        $this->logger->info('Event created id: '.$event->id);
         return redirect()->route('admin.edit', $event->id);
     }
 
@@ -213,6 +214,8 @@ class EventController extends Controller
 
             $event->save();
 
+            $this->logger->info('Event updated content, id: '.$event->id);
+
             return redirect()->route('admin.edit', $event->id)
                 ->with('status', 'Successfully saved changes');
         } else {
@@ -243,6 +246,8 @@ class EventController extends Controller
 
             $event->visibility = $request->visibility == 'true' ? true : false;
             $event->save();
+
+            $this->logger->info('Event updated visibility, id: '.$event->id);
 
             return redirect()->route('admin.edit', $event->id)
                 ->with('status', 'Successfully changed visibility');
@@ -275,6 +280,7 @@ class EventController extends Controller
             $group->events()->attach($event->id);
         }
 
+        $this->logger->info('Event updated groups, id: '.$event->id);
         return redirect()->route('admin.edit', $event->id)
             ->with('status', 'Successfully changed groups');
     }
@@ -295,9 +301,11 @@ class EventController extends Controller
                 Storage::delete($event->img_path);
                 unlink(storage_path(str_replace("/storage", "app/public", $event->img_path)));
             }
+            $id = $event->id;
             $event->groups()->detach();
             $event->delete();
 
+            $this->logger->info('Event deleted, id: '.$id);
             return redirect()->route('admin.events')
                 ->with('status', 'Event succesfully deleted!');
         } else {

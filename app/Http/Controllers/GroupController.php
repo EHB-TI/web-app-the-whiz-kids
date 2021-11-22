@@ -48,9 +48,11 @@ class GroupController extends Controller
         }
 
         // adds group to db
-        Group::create([
+        $id = Group::create([
             'name' => $request['name'],
-        ]);
+        ])->id;
+
+        $this->logger->info('Group created, id: '.$id);
 
         return redirect()->route('admin.groups')
             ->with('status', 'Group succesfully added!');
@@ -80,7 +82,10 @@ class GroupController extends Controller
                 $event->groups()->detach($group->id);
             }
 
+            $id = $group->id;
             $group->delete();
+
+            $this->logger->info('Group deleted, id: '.$id);
 
             return redirect()->route('admin.groups')
                 ->with('status', 'Group succesfully deleted!');

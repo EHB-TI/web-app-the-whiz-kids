@@ -59,9 +59,11 @@ class QuestionCategoryController extends Controller
                 ->withInput();
         }
 
-        QuestionCategory::create([
+        $id = QuestionCategory::create([
             'name' => $request['name'],
-        ]);
+        ])->id;
+
+        $this->logger->info('Group Category created, id: '.$id);
 
         return redirect()->route('admin.categories.index')
         ->with('status', 'Category succesfully added!');
@@ -108,7 +110,10 @@ class QuestionCategoryController extends Controller
                 ->withInput();
         }
 
-        QuestionCategory::find($category->id)->update(['name' => $request->name]);
+        $questionCategory = QuestionCategory::find($category->id);
+        $questionCategory->update(['name' => $request->name]);
+
+        $this->logger->info('Group Category updated, id: '.$questionCategory->id);
 
         return redirect()->route('admin.categories.index')
         ->with('status', 'Category succesfully added!');
@@ -124,10 +129,14 @@ class QuestionCategoryController extends Controller
     {
         $questions = QuestionCategory::find($category->id)->questions;
         foreach ($questions as $question) {
+            $questionId = $question->id;
             $question->delete();
+            $this->logger->info('Question deleted due to category deletion, id: '.$questionId);
         }
+        $id = $category->id;
         $category->delete();
 
+        $this->logger->info('Group Category deleted, id: '.$id);
         return redirect()->route('admin.categories.index')
             ->with('status', 'Category succesfully deleted!');
     }

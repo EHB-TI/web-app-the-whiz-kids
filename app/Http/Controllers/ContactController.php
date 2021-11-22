@@ -60,6 +60,8 @@ class ContactController extends Controller
 
         Mail::to('better.ge.tracker@gmail.com')->send(new SendMail($request->email, $data));
 
+        $this->logger->info('Contact-form sent by: '.$request->email);
+
         return redirect()->route('content.index')
         ->with('status', 'Your form was succesfully sent!');
     }

@@ -8,6 +8,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\QuestionCategoryController;
 use App\Http\Controllers\QuestionController;
+use Illuminate\Support\Facades\Log;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +20,7 @@ use App\Http\Controllers\QuestionController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 
 //////////////////
 // Viewer Event //
