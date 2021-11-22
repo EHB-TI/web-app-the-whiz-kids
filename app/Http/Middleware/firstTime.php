@@ -18,8 +18,13 @@ class FirstTime
     public function handle(Request $request, Closure $next)
     {
         if (Auth::user()->created_at == Auth::user()->updated_at) {
-            return redirect()->route('admin.change-password')
-                ->with('status', 'This is your first login, please enter a new password with min 16 characters, number, symbol, upper and lowercase characters.');
+            if (Auth::user()->role == "admin") {
+                return redirect()->route('admin.change-password')
+                    ->with('status', 'This is your first login, please enter a new password with min 16 characters, number, symbol, upper and lowercase characters.');
+            } else {
+                return redirect()->route('admin.change-password')
+                    ->with('status', 'This is your first login, please enter a new password with min 8 characters, number, symbol, upper and lowercase characters.');
+            }
         }
 
         return $next($request);
