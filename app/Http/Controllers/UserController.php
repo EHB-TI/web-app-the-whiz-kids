@@ -25,6 +25,7 @@ class UserController extends Controller
     // returns all users
     public function users()
     {
+        $this->logger->info('Return all existing users');
         $users = User::all();
         foreach ($users as  $user){
             $user->group_name = Group::find($user->group_id)->name;
@@ -37,6 +38,8 @@ class UserController extends Controller
 
     // loads add user page
     public function add_user_load(){
+        $this->logger->info('Load view to add users');
+
         $groups = Group::all();
         return view('admin.user.add_user', ['groups' => $groups]);
     }
@@ -44,6 +47,7 @@ class UserController extends Controller
     // manages request to add user
     public function add_user(Request $request)
     {
+        $this->logger->info('Post request to add a new user');
         // validates request
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
@@ -53,6 +57,7 @@ class UserController extends Controller
         ]);
 
         if ($validator->fails()) {
+            $this->logger->error('Valdation failed on Post data to create a new user');
             return redirect()->route('admin.add-user')
                 ->withErrors($validator)
                 ->withInput();
@@ -78,15 +83,19 @@ class UserController extends Controller
         ];
 
         try {
+            $this->logger->info('Sending Mail for a new password');
             Mail::to($request->email)->send(new SendMail('better.ge.tracker@gmail.com', $data));
         }
         catch(\Exception $e){ // Error if mail isn't send & delete created user
+            $this->logger->error('Sending mail failed and new user got deleted');
             $user = User::where('email', $request['email'])->first();
             $user->delete();
             return redirect()->route('admin.add-user')
             ->withErrors(['emailService' => [$e->getMessage()]])
             ->withInput();
         }
+
+        $this->logger->info('Succesfully added a new user');
 
         return redirect()->route('admin.users')
             ->with('status', 'User succesfully added!');
@@ -95,14 +104,19 @@ class UserController extends Controller
     // deletes user
     public function delete($id)
     {
+        $this->logger->info('Delete a user by ID');
+
         $user = User::find($id);
         if (Auth::user() == $user) {
+            $this->logger->error('Cannot delete yourself');
             return redirect()->route('admin.users')
                 ->with('error', 'Cannot delete self');
         } else {
             // Change all events created by and updated by id to admin? Delete all events of this user? Make button to delete all events of this user?
 
             $user->delete();
+
+            $this->logger->info('User got succesfully deleted');
 
             return redirect()->route('admin.users')
                 ->with('status', 'User succesfully deleted!');
@@ -112,12 +126,14 @@ class UserController extends Controller
     // change password form
     public function change_password()
     {
+        $this->logger->info('Get view to change your password');
         return view('auth.passwords.change');
     }
 
     // request handler for password form
     public function change_password_submit(Request $request)
     {
+        $this->logger->info('Post data to have password change');
         $request->validate([
             'current_password' => ['required', new MatchOldPassword],
             'password' => ['required', 'string', 'min:16', 'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/'],
@@ -126,11 +142,14 @@ class UserController extends Controller
 
         User::find(auth()->user()->id)->update(['password' => Hash::make($request->password)]);
 
+        $this->logger->info('Succesfully updated password');
+    
         return redirect()->route('admin.index');
     }
 
     // loads edit user page
     public function edit_user_load($id){
+        $this->logger->info('Get view to edit a user');
         $user = User::find($id);
         $groups = Group::all();
         return view('admin.user.edit_user', ['user' => $user, 'groups' => $groups]);
@@ -138,7 +157,7 @@ class UserController extends Controller
 
     // handles edit user form 
     public function edit_user(Request $request, $id){
-        
+        $this->logger->info('Post request to edit a user');
         $request->validate([
             'id' => ['required', 'exists:users,id'],
             'role' => ['required', new Role],
@@ -147,6 +166,7 @@ class UserController extends Controller
 
         User::find($request->id)->update(['role' => $request->role, 'group_id' => $request->group]);
 
+        $this->logger->info('User updated');
         return redirect()->route('admin.users');
     }
 }

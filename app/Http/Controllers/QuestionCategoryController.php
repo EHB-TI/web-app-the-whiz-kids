@@ -17,6 +17,8 @@ class QuestionCategoryController extends Controller
      */
     public function index()
     {
+        $this->logger->info('Get view of the index page for the categories');
+
         $categories = QuestionCategory::all();
         
         foreach ($categories as  $category) {
@@ -38,6 +40,7 @@ class QuestionCategoryController extends Controller
      */
     public function create()
     {
+        $this->logger->info('Get create view to add categories');
         return view('admin.faq.category_create');
     }
 
@@ -49,11 +52,14 @@ class QuestionCategoryController extends Controller
      */
     public function store(Request $request)
     {
+        $this->logger->info('Validate Post data for new category');
+        
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:256'],
         ]);
 
         if ($validator->fails()) {
+            $this->logger->error('Failed on Validation Post data');
             return redirect()->route('admin.questions.create', $request->question_category_id)
                 ->withErrors($validator)
                 ->withInput();
@@ -62,6 +68,8 @@ class QuestionCategoryController extends Controller
         QuestionCategory::create([
             'name' => $request['name'],
         ]);
+
+        $this->logger->info('Category succesfully added');
 
         return redirect()->route('admin.categories.index')
         ->with('status', 'Category succesfully added!');
@@ -86,6 +94,7 @@ class QuestionCategoryController extends Controller
      */
     public function edit(QuestionCategory $category)
     {
+        $this->logger->info('Get view to edit categories');
         return view('admin.faq.category_edit', ['category' => $category]);
     }
 
@@ -98,17 +107,21 @@ class QuestionCategoryController extends Controller
      */
     public function update(Request $request, QuestionCategory $category)
     {
+        $this->logger->info('Update an existing category');
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:256'],
         ]);
 
         if ($validator->fails()) {
+            $this->logger->error('Update failed on validation Post data');
             return redirect()->route('admin.questions.create', $request->question_category_id)
                 ->withErrors($validator)
                 ->withInput();
         }
 
         QuestionCategory::find($category->id)->update(['name' => $request->name]);
+
+        $this->logger->info('Category succesfully added');
 
         return redirect()->route('admin.categories.index')
         ->with('status', 'Category succesfully added!');
@@ -122,12 +135,14 @@ class QuestionCategoryController extends Controller
      */
     public function destroy(QuestionCategory $category)
     {
+        $this->logger->info('Delete a category');
         $questions = QuestionCategory::find($category->id)->questions;
         foreach ($questions as $question) {
             $question->delete();
         }
         $category->delete();
 
+        $this->logger->info('Succesfully deleted a category');
         return redirect()->route('admin.categories.index')
             ->with('status', 'Category succesfully deleted!');
     }

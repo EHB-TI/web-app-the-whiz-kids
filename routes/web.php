@@ -8,6 +8,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\QuestionCategoryController;
 use App\Http\Controllers\QuestionController;
+use Illuminate\Support\Facades\Log;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +20,7 @@ use App\Http\Controllers\QuestionController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 
 //////////////////
 // Viewer Event //
@@ -35,6 +37,7 @@ Route::name('content.')->group(function () {
 
     // about page
     Route::get('/about', function () {
+        \Log::channel('logging_table')->info('Get view of the about page');
         return view('other.about');
     })->name('about');
 
@@ -70,6 +73,7 @@ Route::prefix('admin')->group(function () {
 
                 // dashboard for users
                 Route::get('/', function () {
+                    \Log::channel('logging_table')->info('Get Dashboard view');
                     return view('admin.index');
                 })
                     ->name('index');

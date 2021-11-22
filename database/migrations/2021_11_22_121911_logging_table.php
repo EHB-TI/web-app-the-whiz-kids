@@ -16,7 +16,7 @@ class LoggingTable extends Migration
         Schema::create('logs', function (Blueprint $table) {
             $table->id();
             //Foreign key on email is not recongized
-            $table->longText('email');
+            $table->longText('user_id');
             $table->longText('message');
             $table->timestamps();
         });
