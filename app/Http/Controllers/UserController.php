@@ -118,11 +118,31 @@ class UserController extends Controller
     // request handler for password form
     public function change_password_submit(Request $request)
     {
-        $request->validate([
-            'current_password' => ['required', new MatchOldPassword],
-            'password' => ['required', 'string', 'min:16', 'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/'],
-            'confirm_password' => ['same:password'],
-        ]);
+        if (auth()->user()->role == "admin") {
+            $validator = Validator::make($request->all(), [
+                'current_password' => ['required', new MatchOldPassword],
+                'password' => ['required', 'string', 'min:16', 'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/'],
+                'confirm_password' => ['same:password'],
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()->route('admin.change-password')
+                    ->withErrors($validator)
+                    ->with('status', 'This is your first login, please enter a new password with min 16 characters, number, symbol, upper and lowercase characters.');
+            }
+        } else {
+            $validator = Validator::make($request->all(), [
+                'current_password' => ['required', new MatchOldPassword],
+                'password' => ['required', 'string', 'min:8', 'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/'],
+                'confirm_password' => ['same:password'],
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()->route('admin.change-password')
+                    ->withErrors($validator)
+                    ->with('status', 'This is your first login, please enter a new password with min 8 characters, number, symbol, upper and lowercase characters.');
+            }
+        }
 
         User::find(auth()->user()->id)->update(['password' => Hash::make($request->password)]);
 
