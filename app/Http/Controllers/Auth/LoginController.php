@@ -10,8 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class LoginController extends Controller
-{
+class LoginController extends Controller {
     /*
     |--------------------------------------------------------------------------
     | Login Controller
@@ -37,15 +36,13 @@ class LoginController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->middleware('guest')->except('logout');
     }
 
 
     /**
      * @param Request $request
-     * @return RedirectResponse
      */
     public function login(Request $request) {
         $credentials = $request->validate([
@@ -57,18 +54,19 @@ class LoginController extends Controller
             $request->session()->regenerate();
 
             $user = Auth::user();
-            if($user->role == "admin") {
+            if ($user->role == "admin") {
                 $user->setRememberToken(null);
                 $user->save();
             }
 
             $alert = isset($request["remember"]);
 
-            return redirect()->intended("admin")->with(["alert" => $alert]);
+            return view("admin.index", compact("alert"));
         }
 
         return back()->withErrors([
             "email" => "The provided credentials do not match our records."
         ]);
     }
+
 }

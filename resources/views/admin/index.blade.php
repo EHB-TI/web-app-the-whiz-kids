@@ -3,7 +3,11 @@
 
     <h1 class="mt-4">Aan de slag</h1>
 
-    @dd($alert)
+    @if($alert ?? false)
+        <div class="alert alert-danger">
+            Omwille van veiligheidsredenen, is de remember-me functie uitgeschakeld voor admins!
+        </div>
+    @endif
 
     <p>Aanmaken van een nieuw event is eenvoudig, ga naar de event tab aan de linker kant en druk dan rechts bovenaan op
         "Toevoegen".</p>
