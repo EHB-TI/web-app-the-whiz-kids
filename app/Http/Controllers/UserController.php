@@ -12,7 +12,7 @@ use App\Models\Group;
 
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SendMail;
-
+use App\Models\Event;
 use App\Rules\MatchOldPassword;
 use App\Rules\Role;
 
@@ -103,11 +103,22 @@ class UserController extends Controller
             return redirect()->route('admin.users')
                 ->with('error', 'Cannot delete self');
         } else {
-            // Change all events created by and updated by id to admin? Delete all events of this user? Make button to delete all events of this user?
-            $useremail = $user->email;
+            $eventsC = Event::select(['id'])->where('created_by_id', $id)->pluck('id');
+            Event::where('created_by_id', $id)->update(["created_by_id" => Auth::user()->id]);
+            foreach ($eventsC as  $eventId){
+                $this->logger->info('Event updated created_by_id due to deletion of user id: '.$id.', event id: '.$eventId);
+            }
+
+            $eventsU = Event::select(['id'])->where('updated_by_id', $id)->pluck('id');
+            Event::where('updated_by_id', $id)->update(["updated_by_id" => Auth::user()->id]);
+            foreach ($eventsU as  $eventId){
+                $this->logger->info('Event updated updated_by_id due to deletion of user id: '.$id.', event id: '.$eventId);
+            }
+
+            $userEmail = $user->email;
             $user->delete();
 
-            $this->logger->info('User deleted, email: '.$useremail);
+            $this->logger->info('User deleted, email: '.$userEmail.'id: '.$id);
 
             return redirect()->route('admin.users')
                 ->with('status', 'User succesfully deleted!');
