@@ -14,8 +14,6 @@ class GroupController extends Controller
     // returns all groups
     public function groups()
     {
-        $this->logger->info('Get all groups');
-
         $groups = Group::all();
         foreach ($groups as  $group) {
             $members = array();
@@ -32,33 +30,29 @@ class GroupController extends Controller
     // returns add groups
     public function add_group_load()
     {
-        $this->logger->info('View to create a new group');
-
         return view('admin.group.add_group');
     }
 
     // add groups to db from request
     public function add_group(Request $request)
     {
-        $this->logger->info('A Post to create a new group');
         // validates request
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255', 'unique:groups'],
         ]);
 
         if ($validator->fails()) {
-            $this->logger->error('Validation failed on Post data');
             return redirect()->route('admin.add-group')
                 ->withErrors($validator)
                 ->withInput();
         }
 
         // adds group to db
-        Group::create([
+        $id = Group::create([
             'name' => $request['name'],
-        ]);
+        ])->id;
 
-        $this->logger->info('Group succesfully added');
+        $this->logger->info('Group created, id: '.$id);
 
         return redirect()->route('admin.groups')
             ->with('status', 'Group succesfully added!');
@@ -67,18 +61,13 @@ class GroupController extends Controller
     // deletes group and changes all members & events in it to unassigned group
     public function delete_group($id)
     {
-        $this->logger->info('Delete a group');
-
         $group = Group::find($id);
         if (Auth::user()->group_id == $group->id) {
-            $this->logger->error('Cannot delete your own group');
-
             return redirect()->route('admin.groups')
                 ->with('error', 'Cannot delete own group');
         } else {
             // please note that group 1 -> Unassigned cannot be deleted due to db restrictions
             if ($id == 1) {
-                $this->logger->info('Cannot delete group \'Unassigned\'');
                 return redirect()->route('admin.groups')
                     ->with('error', "Cannot delete group 'Unassigned'");
             }
@@ -93,9 +82,10 @@ class GroupController extends Controller
                 $event->groups()->detach($group->id);
             }
 
+            $id = $group->id;
             $group->delete();
 
-            $this->logger->info('Group succesfully deleted');
+            $this->logger->info('Group deleted, id: '.$id);
 
             return redirect()->route('admin.groups')
                 ->with('status', 'Group succesfully deleted!');

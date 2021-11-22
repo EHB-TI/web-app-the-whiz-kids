@@ -23,7 +23,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $this->logger->info('Get view of the home page');
         return view('home');
     }
 }

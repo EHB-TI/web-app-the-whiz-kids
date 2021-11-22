@@ -25,7 +25,6 @@ class QuestionController extends Controller
      */
     public function create($question_category_id)
     {
-        $this->logger->info('Get view to create a new question');
         return view('admin.faq.question_create', ['question_category_id' => $question_category_id]);
     }
 
@@ -37,7 +36,6 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
-        $this->logger->info('Post request to create a new question');
 
         // validates request
         $validator = Validator::make($request->all(), [
@@ -47,19 +45,18 @@ class QuestionController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $this->logger->error('Validation failed on Post data for a new question');
             return redirect()->route('admin.questions.create', $request->question_category_id)
                 ->withErrors($validator)
                 ->withInput();
         }
 
-        Question::create([
+        $id = Question::create([
             'question_category_id' => $request['question_category_id'],
             'question' => $request['question'],
             'answer' => $request['answer'],
-        ]);
+        ])->id;
 
-        $this->logger->info('Question succesfully created');
+        $this->logger->info('Question created, id: '.$id);
 
         return redirect()->route('admin.categories.index')
         ->with('status', 'Question succesfully added!');
@@ -84,7 +81,6 @@ class QuestionController extends Controller
      */
     public function edit(Question $question)
     {
-        $this->logger->info('Get edit view for a question');
         return view('admin.faq.question_edit', ['question' => $question]);
     }
 
@@ -97,7 +93,6 @@ class QuestionController extends Controller
      */
     public function update(Request $request, Question $question)
     {
-        $this->logger->info('Get the update view for a question');
 
         $validator = Validator::make($request->all(), [
             'question_category_id' => ['required', 'exists:question_categories,id'],
@@ -106,7 +101,6 @@ class QuestionController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $this->logger->error('Validation failed to update the question');
             return redirect()->route('admin.questions.create', $request->question_category_id)
                 ->withErrors($validator)
                 ->withInput();
@@ -114,7 +108,7 @@ class QuestionController extends Controller
 
         Question::find($question->id)->update(['question' => $request->question, 'answer' => $request->answer]);
 
-        $this->logger->info('Succesfully updated the question');
+        $this->logger->info('Question updated, id: '.$question->id);
 
         return redirect()->route('admin.categories.index')
         ->with('status', 'Question succesfully updated!');
@@ -128,11 +122,10 @@ class QuestionController extends Controller
      */
     public function destroy(Question $question)
     {
-        $this->logger->info('Delete a question');
-
+        $id = $question->id;
         $question->delete();
 
-        $this->logger->info('Succecsfully deleted a question');
+        $this->logger->info('Question deleted, id: '.$id);
 
         return redirect()->route('admin.categories.index')
             ->with('status', 'Question succesfully deleted!');

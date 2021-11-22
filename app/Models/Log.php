@@ -12,7 +12,7 @@ class Log extends Model
     protected $table = 'logs';
 
     protected $fillable = [
-        'user_id',
+        'user_email',
         'message'
     ];
 

@@ -37,7 +37,6 @@ Route::name('content.')->group(function () {
 
     // about page
     Route::get('/about', function () {
-        \Log::channel('logging_table')->info('Get view of the about page');
         return view('other.about');
     })->name('about');
 
@@ -73,7 +72,6 @@ Route::prefix('admin')->group(function () {
 
                 // dashboard for users
                 Route::get('/', function () {
-                    \Log::channel('logging_table')->info('Get Dashboard view');
                     return view('admin.index');
                 })
                     ->name('index');

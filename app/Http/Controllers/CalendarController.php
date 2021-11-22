@@ -12,7 +12,6 @@ class CalendarController extends Controller
     // returns calendar with event details
     public function calendar()
     {
-        $this->logger->info('GET Calender with Events');
         $data = [];
         $events = Event::all();
 

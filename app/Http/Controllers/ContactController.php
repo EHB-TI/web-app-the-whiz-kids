@@ -26,8 +26,6 @@ class ContactController extends Controller
      */
     public function create()
     {
-        $this->logger->info('Get view for the contact-form');
-
         return view('other.contact');
     }
 
@@ -39,8 +37,6 @@ class ContactController extends Controller
      */
     public function store(Request $request)
     {
-        $this->logger->info('Sending POST contact-form');
-
         // validates request
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:256'],
@@ -50,8 +46,6 @@ class ContactController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $this->logger->error('Validation failed on contact-form');
-
             return redirect()->route('content.contact.create')
                 ->withErrors($validator)
                 ->withInput();
@@ -66,7 +60,7 @@ class ContactController extends Controller
 
         Mail::to('better.ge.tracker@gmail.com')->send(new SendMail($request->email, $data));
 
-        $this->logger->info('Contact-form sent by mail');
+        $this->logger->info('Contact-form sent by: '.$request->email);
 
         return redirect()->route('content.index')
         ->with('status', 'Your form was succesfully sent!');

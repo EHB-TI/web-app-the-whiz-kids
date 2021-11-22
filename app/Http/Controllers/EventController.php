@@ -26,15 +26,12 @@ class EventController extends Controller
     public function index()
     {
         //Log example
-        $this->logger->info('Get view for event_index page');
-        
         return view('content.index', ['events' => Event::orderBy('event_date_start')->where('visibility', true)->get()]);
     }
 
     // event returns event based on id
     public function event($id)
     {
-        $this->logger->info('Return an event based on id');
         $event = Event::find($id);
 
         // check if event exists or if event is visible
@@ -52,14 +49,11 @@ class EventController extends Controller
                         $event->paraBody1 = $desc_array[0];
                         break;
                 }
-                $this->logger->info('Succesfully found event');
                 return view('content.event', ['event' => $event]);
             }
-            $this->logger->error('Could not find event');
             return redirect()->route('content.index')
                 ->with('error', 'Could not find event');
         }
-        $this->logger->error('Could not find event');
         return redirect()->route('content.index')
             ->with('error', 'Could not find event');
     }
@@ -67,13 +61,10 @@ class EventController extends Controller
     // returns events for people with account
     public function adminEvents()
     {
-        $this->logger->info('Get all events by group');
         // if user is admin, return all events from every group !! will probably change so only OSD admins can see all groups -> will be asked first
         if (Auth::user()->role == "admin") {
-            $this->logger->info('Get all events as admin');
             $events = Event::orderByDesc('id')->get();
         } else {
-            $this->logger->info('Get all events as group member');
             // get all events from with group id ""
             $events = Event::with('groups')->whereHas('groups', function ($query) {
                 $query->where('group_id', Auth::user()->group_id);
@@ -91,21 +82,16 @@ class EventController extends Controller
     // load create page
     public function createLoad()
     {
-        $this->logger->info('Get view for event creation');
-
         return view('admin.event.create');
     }
 
     // create new event, returns edit page for event
     public function create(Request $request)
     {
-        $this->logger->info('Post data for new event');
-
         // validate request
         $validator = $this->validator($request, "create");
 
         if ($validator->fails()) {
-            $this->logger->error('Event creation validator failed');
             return redirect()->route('admin.create')
                 ->withErrors($validator)
                 ->withInput();
@@ -117,8 +103,6 @@ class EventController extends Controller
         } else {
             $request->request->add(["display_title" => "none"]);
         }
-
-        $this->logger->info('Create new event');
 
         // create event
         $event = Event::create([
@@ -135,20 +119,17 @@ class EventController extends Controller
             'event_date_end' => $request->event_date_end,
         ]);
 
-        $this->logger->info('Attach group to event');
-
         // attach event to group
         $group = Group::find(Auth::user()->group_id);
         $group->events()->attach($event->id);
 
-        $this->logger->info('Get edit view for newly created event');
+        $this->logger->info('Event created id: '.$event->id);
         return redirect()->route('admin.edit', $event->id);
     }
 
     // loads edit page
     public function editLoad($id)
     {
-        $this->logger->info('Get edit view for event by id');
         $event = Event::find($id);
 
         $desc_array = explode("<br /><br />", $event->desc_long);
@@ -172,16 +153,10 @@ class EventController extends Controller
 
         // check if user is allowed to edit this event -> if admin or if user in group of this event ? middleware replacement
         if (Auth::user()->role == "admin") {
-            $this->logger->info('Get edit view as Admin');
-
             return view('admin.event.edit', ['event' => $event, 'id' => $id, 'groups' => Group::where("id", "!=", 1)->get()]);
         } elseif (in_array(Auth::user()->group_id, $group_ids)) {
-            $this->logger->info('Get edit view as user from group');
-
             return view('admin.event.edit', ['event' => $event, 'id' => $id]);
         } else {
-            $this->logger->error('User is not allowed to edit this event');
-
             return redirect()->route('admin.events')
                 ->with('error', 'You do not have permission to edit this event');
         }
@@ -190,8 +165,6 @@ class EventController extends Controller
     // same functionality as create
     public function edit(Request $request)
     {
-        $this->logger->info('Create a new event');
-
         $event = Event::find($request->id);
 
         $groups = $event->groups;
@@ -241,13 +214,11 @@ class EventController extends Controller
 
             $event->save();
 
-            $this->logger->info('Successfully saved changes');
+            $this->logger->info('Event updated content, id: '.$event->id);
 
             return redirect()->route('admin.edit', $event->id)
                 ->with('status', 'Successfully saved changes');
         } else {
-            $this->logger->error('User is not allowed to edit this event');
-
             return redirect()->route('admin.events')
                 ->with('error', 'You do not have permission to edit this event');
         }
@@ -255,7 +226,6 @@ class EventController extends Controller
 
     public function visibility(Request $request)
     {
-        $this->logger->info('Change visibility for event');
         $event = Event::find($request->id);
 
         $groups = $event->groups;
@@ -277,12 +247,11 @@ class EventController extends Controller
             $event->visibility = $request->visibility == 'true' ? true : false;
             $event->save();
 
-            $this->logger->info('Successfully changed visibility');
+            $this->logger->info('Event updated visibility, id: '.$event->id);
 
             return redirect()->route('admin.edit', $event->id)
                 ->with('status', 'Successfully changed visibility');
         } else {
-            $this->logger->error('No permission for the user');
             return redirect()->route('admin.events')
                 ->with('error', 'You do not have permission to edit this event');
         }
@@ -290,7 +259,6 @@ class EventController extends Controller
 
     public function groups(Request $request)
     {
-        $this->logger->info('Change group of an event');
         $event = Event::find($request->id);
 
         $validator = Validator::make($request->all(), [
@@ -298,7 +266,6 @@ class EventController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $this->logger->error('Validation failed on group change');
             return redirect()->route('admin.edit', $request->id)
                 ->withErrors($validator);
         }
@@ -313,7 +280,7 @@ class EventController extends Controller
             $group->events()->attach($event->id);
         }
 
-        $this->logger->info('Event succesfuully chanegd from group');
+        $this->logger->info('Event updated groups, id: '.$event->id);
         return redirect()->route('admin.edit', $event->id)
             ->with('status', 'Successfully changed groups');
     }
@@ -321,7 +288,6 @@ class EventController extends Controller
     // delete event, unattach from group, delete banner image
     public function delete($id)
     {
-        $this->logger->info('Delete event based on ID');
         $event = Event::find($id);
 
         $groups = $event->groups;
@@ -335,14 +301,14 @@ class EventController extends Controller
                 Storage::delete($event->img_path);
                 unlink(storage_path(str_replace("/storage", "app/public", $event->img_path)));
             }
+            $id = $event->id;
             $event->groups()->detach();
             $event->delete();
 
-            $this->logger->info('Succesfully deleted event');
+            $this->logger->info('Event deleted, id: '.$id);
             return redirect()->route('admin.events')
                 ->with('status', 'Event succesfully deleted!');
         } else {
-            $this->logger->error('User is not permited to delete this event');
             return redirect()->route('admin.events')
                 ->with('error', 'You do not have permission to edit this event');
         }
