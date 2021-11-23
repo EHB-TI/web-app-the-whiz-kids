@@ -27,7 +27,7 @@ De toepassing die wij willen beveiligen is een dynamische website waarop student
 Risico ligt vooral in pogingen om brute-force het wachtwoord van het account te achterhalen, of indien de de eigenaar van het admin account zijn eigen computer niet goed beschermt tegen ander mogelijk gebruik.
 Oplossingen:
 1. Maximaal aantal login pogingen, indien overschreden timeout van 5 minuten
-2. 32-character lang wachtwoord
+2. 16-character lang wachtwoord
 3. "Remember me" functionaliteit uitschakelen
 4. Automatisch uitloggen bij langdurige inactiviteit
 5. Autocomplete van wachtwoord uitschakelen
@@ -38,7 +38,7 @@ Oplossingen:
 Zelfde risico's die aanwezig zijn bij het admin-account, maar bij een doorbraak zal er een veel minder grote impact kunnen worden gemaakt omdat deze accounts tot minder in staat zijn.
 Oplossingen:
 1. Maximaal aantal login pogingen, indien overschreden timeout van 5 minuten
-2. 32-character lang wachtwoord
+2. 8-character lang wachtwoord
 3. "Remember me" functionaliteit uitschakelen
 4. Automatisch uitloggen bij langdurige inactiviteit
 5. Autocomplete van wachtwoord uitschakelen
