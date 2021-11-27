@@ -192,7 +192,7 @@ class EventController extends Controller
             if ($request->file()) {
                 if ($event->img_path !== null) {
                     Storage::delete($event->img_path);
-                    unlink(storage_path(str_replace("/storage", "app/public", $event->img_path)));
+                    unlink(storage_path(str_replace("/storage", "app/www", $event->img_path)));
                 }
 
                 $fileName = str_replace(" ", "-", $request->name) . "-banner.jpg";
@@ -299,7 +299,7 @@ class EventController extends Controller
         if (Auth::user()->role == "admin" || in_array(Auth::user()->group_id, $group_ids)) {
             if ($event->img_path !== null) {
                 Storage::delete($event->img_path);
-                unlink(storage_path(str_replace("/storage", "app/public", $event->img_path)));
+                unlink(storage_path(str_replace("/storage", "app/www", $event->img_path)));
             }
             $id = $event->id;
             $event->groups()->detach();
