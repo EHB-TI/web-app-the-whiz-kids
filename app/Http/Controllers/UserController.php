@@ -137,7 +137,7 @@ class UserController extends Controller
         if (auth()->user()->role == "admin") {
             $validator = Validator::make($request->all(), [
                 'current_password' => ['required', new MatchOldPassword],
-                'password' => ['required', 'string', 'min:16', 'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/'],
+                'password' => ['required', 'string', 'min:16', 'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!?@€$#*%_&-]).*$/'],
                 'confirm_password' => ['same:password'],
             ]);
 
@@ -149,7 +149,7 @@ class UserController extends Controller
         } else {
             $validator = Validator::make($request->all(), [
                 'current_password' => ['required', new MatchOldPassword],
-                'password' => ['required', 'string', 'min:8', 'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/'],
+                'password' => ['required', 'string', 'min:8', 'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!?@€$#*%_&-]).*$/'],
                 'confirm_password' => ['same:password'],
             ]);
 
