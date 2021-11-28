@@ -2,11 +2,10 @@
 @section('content')
 
 <div id='calendar'></div>
-
-<link href='https://fullcalendar.io/releases/fullcalendar/3.9.0/fullcalendar.min.css' rel='stylesheet' />
-<script src='https://fullcalendar.io/releases/fullcalendar/3.9.0/lib/moment.min.js'></script>
-<script src='https://fullcalendar.io/releases/fullcalendar/3.9.0/lib/jquery.min.js'></script>
-<script src='https://fullcalendar.io/releases/fullcalendar/3.9.0/fullcalendar.min.js'></script>
+<link rel="stylesheet" href="{{ asset('storage/css/calendar/fullcalendar.min.css') }}">
+<script src="{{ asset('storage/js/calendar/moment.min.js') }}"></script>
+<script src="{{ asset('storage/js/calendar/jquery.min.js') }}"></script>
+<script src="{{ asset('storage/js/calendar/fullcalendar.min.js') }}"></script>
 <script>
     jQuery(document).ready(function($) {
         events = {!!json_encode($data, JSON_HEX_TAG) !!}
