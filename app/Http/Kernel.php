@@ -23,6 +23,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\HttpRedirect::class,
         \App\Http\Middleware\HSTS::class,
+        \App\Http\Middleware\FrameGaurd::class,
     ];
 
     /**
