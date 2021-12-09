@@ -181,6 +181,10 @@ class UserController extends Controller
     // loads edit user page
     public function edit_user_load($id){
         $user = User::find($id);
+        if (Auth::user()->role == "admin" && $user->role == "admin") {
+            return redirect()->route('admin.users')
+            ->with('error', 'As admin, you are not allowed to edit other admins. Please contact a Super Admin.');
+        }
         $groups = Group::all();
         return view('admin.user.edit_user', ['user' => $user, 'groups' => $groups]);
     }
