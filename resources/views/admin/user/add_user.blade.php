@@ -63,7 +63,9 @@
                         <label for="role" class="col-md-4 col-form-label text-md-right">Select role</label>
                         <div class="col-md-6">
                             <select class="form-control" id="role" name="role">
+                                @if (auth()->user()->role == "super_admin")
                                 <option value="admin" {{ old('role') == 'admin' ? 'selected' : ''}}>Admin</option>
+                                @endif
                                 <option value="editor" {{ old('role') == 'editor' ? 'selected' : ''}}>Editor</option>
                                 <option value="viewer" {{ old('role') == 'viewer' ? 'selected' : ''}}>Viewer</option>
                             </select>

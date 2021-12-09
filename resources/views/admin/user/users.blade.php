@@ -23,7 +23,22 @@
                 <td>{{ $user->email }}</td>
                 <td>{{ ucfirst($user->role) }}</td>
                 <td>{{ $user->group_name }}</td>
-                @if ($user->id != auth()->user()->id)
+                @if ($user->id != auth()->user()->id && auth()->user()->role == "super_admin")
+                <td>
+                    <div class="button">
+                        <form action="{{ route('admin.delete-user', $user->id) }}" method="POST">
+                            @csrf
+                            @method('delete')
+                            <button type="submit" onclick="return confirm('Are you sure you want to delete: {{ $user->name }}?')" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </td>
+                <td>
+                    <div class="button">
+                        <a href="{{ route('admin.edit-user', $user->id) }}" class="btn btn-primary">Edit</a>
+                    </div>
+                </td>
+                @elseif ($user->id != auth()->user()->id && $user->role != "admin")
                 <td>
                     <div class="button">
                         <form action="{{ route('admin.delete-user', $user->id) }}" method="POST">

@@ -7,7 +7,7 @@
             <li class="nav-item">
                 <a class="nav-link" id="preview-tab" href="#">Event Voorbeeld</a>
             </li>
-            @if(auth()->user()->role == "admin")
+            @if(auth()->user()->role == "admin" || auth()->user()->role == "super_admin")
             <li class="nav-item">
                 <a class="nav-link" id="visibility-tab" href="#">Event Zichtbaarheid & Organisatoren</a>
             </li>

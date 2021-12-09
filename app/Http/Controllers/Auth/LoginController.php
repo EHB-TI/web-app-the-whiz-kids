@@ -56,7 +56,7 @@ class LoginController extends Controller {
 
             $user = Auth::user();
             if (isset($request["remember"])) {
-                if ($user->role == "admin") 
+                if ($user->role == "admin" || $user->role == "super_admin") 
                 {
                     return redirect()->route('admin.index')
                     ->with('error', 'Omwille van veiligheidsredenen, is de remember-me functie uitgeschakeld voor admins!');

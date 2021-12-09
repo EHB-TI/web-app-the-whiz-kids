@@ -13,6 +13,7 @@
                     <div class="form-group row">
                         <label for="role" class="col-md-4 col-form-label text-md-right">Select role</label>
                         <div class="col-md-6">
+                            @if (auth()->user()->role == "super_admin")
                             <select class="form-control" id="role" name="role">
                                 @if (old('_token') !== null))
                                 <option value="admin" {{ old('role') == 'admin' ? 'selected' : ''}}>Admin</option>
@@ -24,6 +25,17 @@
                                 <option value="viewer" {{ $user->role == 'viewer' ? 'selected' : ''}}>Viewer</option>
                                 @endif
                             </select>
+                            @else
+                            <select class="form-control" id="role" name="role">
+                                @if (old('_token') !== null))
+                                <option value="editor" {{ old('role') == 'editor' ? 'selected' : ''}}>Editor</option>
+                                <option value="viewer" {{ old('role') == 'viewer' ? 'selected' : ''}}>Viewer</option>
+                                @else
+                                <option value="editor" {{ $user->role == 'editor' ? 'selected' : ''}}>Editor</option>
+                                <option value="viewer" {{ $user->role == 'viewer' ? 'selected' : ''}}>Viewer</option>
+                                @endif
+                            </select>
+                            @endif
 
                             @error('role')
                             <span class="invalid-feedback" role="alert">

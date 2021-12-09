@@ -62,7 +62,7 @@ class EventController extends Controller
     public function adminEvents()
     {
         // if user is admin, return all events from every group !! will probably change so only OSD admins can see all groups -> will be asked first
-        if (Auth::user()->role == "admin") {
+        if (Auth::user()->role == "admin" || Auth::user()->role == "super_admin") {
             $events = Event::orderByDesc('id')->get();
         } else {
             // get all events from with group id ""
@@ -152,7 +152,7 @@ class EventController extends Controller
         }
 
         // check if user is allowed to edit this event -> if admin or if user in group of this event ? middleware replacement
-        if (Auth::user()->role == "admin") {
+        if (Auth::user()->role == "admin" || Auth::user()->role == "super_admin") {
             return view('admin.event.edit', ['event' => $event, 'id' => $id, 'groups' => Group::where("id", "!=", 1)->get()]);
         } elseif (in_array(Auth::user()->group_id, $group_ids)) {
             return view('admin.event.edit', ['event' => $event, 'id' => $id]);
@@ -173,7 +173,7 @@ class EventController extends Controller
             array_push($group_ids, $group->id);
         }
 
-        if (Auth::user()->role == "admin" || in_array(Auth::user()->group_id, $group_ids)) {
+        if (Auth::user()->role == "admin" || Auth::user()->role == "super_admin" || in_array(Auth::user()->group_id, $group_ids)) {
             $validator = $this->validator($request, "edit");
 
             if ($validator->fails()) {
@@ -234,7 +234,7 @@ class EventController extends Controller
             array_push($group_ids, $group->id);
         }
 
-        if (Auth::user()->role == "admin" || in_array(Auth::user()->group_id, $group_ids)) {
+        if (Auth::user()->role == "admin" || Auth::user()->role == "super_admin" || in_array(Auth::user()->group_id, $group_ids)) {
             $validator = Validator::make($request->all(), [
                 'visibility' => 'required',
             ]);
@@ -296,7 +296,7 @@ class EventController extends Controller
             array_push($group_ids, $group->id);
         }
 
-        if (Auth::user()->role == "admin" || in_array(Auth::user()->group_id, $group_ids)) {
+        if (Auth::user()->role == "admin" || Auth::user()->role == "super_admin" || in_array(Auth::user()->group_id, $group_ids)) {
             if ($event->img_path !== null) {
                 Storage::delete($event->img_path);
                 unlink(storage_path(str_replace("/storage", "app/public", $event->img_path)));

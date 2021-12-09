@@ -87,7 +87,7 @@
                 </form>
             </div>
 
-            @if(auth()->user()->role == "admin")
+            @if(auth()->user()->role == "admin" || auth()->user()->role == "super_admin")
             <div class="extra-form">
                 <form action="{{ route('admin.event.groups') }}" method="post">
                     @csrf

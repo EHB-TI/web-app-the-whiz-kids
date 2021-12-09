@@ -26,7 +26,7 @@ class Role implements Rule
     public function passes($attribute, $value)
     {
         $validation = false;
-        if (in_array($value, ["admin", "editor", "viewer"])){
+        if (in_array($value, ["super_admin", "admin", "editor", "viewer"])){
             $validation = true;
         }
         return $validation;
