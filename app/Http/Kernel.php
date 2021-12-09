@@ -25,6 +25,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\HSTS::class,
         \App\Http\Middleware\FrameGaurd::class,
         \App\Http\Middleware\NoSniff::class,
+        \App\Http\Middleware\NoCache::class,
     ];
 
     /**
