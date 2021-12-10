@@ -17,7 +17,7 @@ class IsEditor
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::user() && (Auth::user()->role == "admin" || Auth::user()->role == "editor")){
+        if (Auth::user() && (Auth::user()->role == "admin" || Auth::user()->role == "super_admin" || Auth::user()->role == "editor")){
             return $next($request);
         }
 

@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('content')
 <div class="create">
-    @if (auth()->user()->role == "admin" || auth()->user()->role == "editor")
+    @if (auth()->user()->role == "admin" || auth()->user()->role == "super_admin" || auth()->user()->role == "editor")
     <a class="btn btn-primary" href="{{ route('admin.create') }}" role="button">Toevoegen</a>
     @else
     <a class="btn btn-primary disabled" href="{{ route('admin.create') }}" role="button" aria-disabled="true">Toevoegen</a>
@@ -20,7 +20,7 @@
             ?>
             </p>
             <p class="card-text">{{ $event->visibility == true ? "Event zichbaarheid: Zichtbaar": "Event zichbaarheid: Onzichtbaar" }}</p>
-            @if (auth()->user()->role == "admin" || auth()->user()->role == "editor")
+            @if (auth()->user()->role == "admin" || auth()->user()->role == "super_admin" || auth()->user()->role == "editor")
             <div class="button">
                 <a href="{{ route('admin.edit', $event->id) }}" class="btn btn-primary">Edit</a>
             </div>

@@ -44,6 +44,11 @@ class UserController extends Controller
     // manages request to add user
     public function add_user(Request $request)
     {
+        if (Auth::user()->role == "admin" && $request->role == "admin") {
+            return redirect()->route('admin.add-user')
+                ->withErrors(['role' => ['As admin, you are not allowed to create other admins. Please contact a Super Admin.']])
+                ->withInput();
+        }
         // validates request
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
@@ -97,31 +102,37 @@ class UserController extends Controller
     // deletes user
     public function delete($id)
     {
-
         $user = User::find($id);
-        if (Auth::user() == $user) {
-            return redirect()->route('admin.users')
-                ->with('error', 'Cannot delete self');
-        } else {
-            $eventsC = Event::select(['id'])->where('created_by_id', $id)->pluck('id');
-            Event::where('created_by_id', $id)->update(["created_by_id" => Auth::user()->id]);
-            foreach ($eventsC as  $eventId){
-                $this->logger->info('Event updated created_by_id due to deletion of user id: '.$id.', event id: '.$eventId);
+        if ($user->exists)
+        {
+            if (Auth::user() == $user) {
+                return redirect()->route('admin.users')
+                    ->with('error', 'Cannot delete self');
             }
-
-            $eventsU = Event::select(['id'])->where('updated_by_id', $id)->pluck('id');
-            Event::where('updated_by_id', $id)->update(["updated_by_id" => Auth::user()->id]);
-            foreach ($eventsU as  $eventId){
-                $this->logger->info('Event updated updated_by_id due to deletion of user id: '.$id.', event id: '.$eventId);
+            elseif (Auth::user()->role == "admin" && $user->role == "admin") {
+                return redirect()->route('admin.users')
+                    ->with('error', 'As admin, you are not allowed to delete other admins. Please contact a Super Admin.');
+            } else {
+                $eventsC = Event::select(['id'])->where('created_by_id', $id)->pluck('id');
+                Event::where('created_by_id', $id)->update(["created_by_id" => Auth::user()->id]);
+                foreach ($eventsC as  $eventId){
+                    $this->logger->info('Event updated created_by_id due to deletion of user id: '.$id.', event id: '.$eventId);
+                }
+    
+                $eventsU = Event::select(['id'])->where('updated_by_id', $id)->pluck('id');
+                Event::where('updated_by_id', $id)->update(["updated_by_id" => Auth::user()->id]);
+                foreach ($eventsU as  $eventId){
+                    $this->logger->info('Event updated updated_by_id due to deletion of user id: '.$id.', event id: '.$eventId);
+                }
+    
+                $userEmail = $user->email;
+                $user->delete();
+    
+                $this->logger->info('User deleted, email: '.$userEmail.'id: '.$id);
+    
+                return redirect()->route('admin.users')
+                    ->with('status', 'User succesfully deleted!');
             }
-
-            $userEmail = $user->email;
-            $user->delete();
-
-            $this->logger->info('User deleted, email: '.$userEmail.'id: '.$id);
-
-            return redirect()->route('admin.users')
-                ->with('status', 'User succesfully deleted!');
         }
     }
 
@@ -134,7 +145,7 @@ class UserController extends Controller
     // request handler for password form
     public function change_password_submit(Request $request)
     {
-        if (auth()->user()->role == "admin") {
+        if (auth()->user()->role == "admin" || auth()->user()->role == "super_admin") {
             $validator = Validator::make($request->all(), [
                 'current_password' => ['required', new MatchOldPassword],
                 'password' => ['required', 'string', 'min:16', 'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!?@€$#*%_&-]).*$/'],
@@ -170,12 +181,21 @@ class UserController extends Controller
     // loads edit user page
     public function edit_user_load($id){
         $user = User::find($id);
+        if (Auth::user()->role == "admin" && $user->role == "admin") {
+            return redirect()->route('admin.users')
+            ->with('error', 'As admin, you are not allowed to edit other admins. Please contact a Super Admin.');
+        }
         $groups = Group::all();
         return view('admin.user.edit_user', ['user' => $user, 'groups' => $groups]);
     }
 
     // handles edit user form 
     public function edit_user(Request $request, $id){
+        if (Auth::user()->role == "admin" && $request->role == "admin") {
+            return redirect()->route('admin.edit-user', $id)
+                ->withErrors(['role' => ['As admin, you are not allowed to create other admins. Please contact a Super Admin.']])
+                ->withInput();
+        }
         $request->validate([
             'id' => ['required', 'exists:users,id'],
             'role' => ['required', new Role],
