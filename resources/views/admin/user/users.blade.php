@@ -38,7 +38,7 @@
                         <a href="{{ route('admin.edit-user', $user->id) }}" class="btn btn-primary">Edit</a>
                     </div>
                 </td>
-                @elseif ($user->id != auth()->user()->id && $user->role != "admin")
+                @elseif ($user->id != auth()->user()->id && $user->role != "admin" && $user->role != "super_admin")
                 <td>
                     <div class="button">
                         <form action="{{ route('admin.delete-user', $user->id) }}" method="POST">

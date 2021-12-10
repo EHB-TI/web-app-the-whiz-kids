@@ -44,7 +44,7 @@ class UserController extends Controller
     // manages request to add user
     public function add_user(Request $request)
     {
-        if (Auth::user()->role == "admin" && $request->role == "admin") {
+        if (Auth::user()->role == "admin" && $request->role == "admin" || $request->role == "super_admin" ) {
             return redirect()->route('admin.add-user')
                 ->withErrors(['role' => ['As admin, you are not allowed to create other admins. Please contact a Super Admin.']])
                 ->withInput();
@@ -109,7 +109,7 @@ class UserController extends Controller
                 return redirect()->route('admin.users')
                     ->with('error', 'Cannot delete self');
             }
-            elseif (Auth::user()->role == "admin" && $user->role == "admin") {
+            elseif (Auth::user()->role == "admin" && $user->role == "admin" || $user->role == "super_admin" ) {
                 return redirect()->route('admin.users')
                     ->with('error', 'As admin, you are not allowed to delete other admins. Please contact a Super Admin.');
             } else {
@@ -181,7 +181,7 @@ class UserController extends Controller
     // loads edit user page
     public function edit_user_load($id){
         $user = User::find($id);
-        if (Auth::user()->role == "admin" && $user->role == "admin") {
+        if (Auth::user()->role == "admin" && $user->role == "admin" || $user->role == "super_admin" ) {
             return redirect()->route('admin.users')
             ->with('error', 'As admin, you are not allowed to edit other admins. Please contact a Super Admin.');
         }
@@ -191,9 +191,9 @@ class UserController extends Controller
 
     // handles edit user form 
     public function edit_user(Request $request, $id){
-        if (Auth::user()->role == "admin" && $request->role == "admin") {
+        if (Auth::user()->role == "admin" && $request->role == "admin" || $request->role == "super_admin") {
             return redirect()->route('admin.edit-user', $id)
-                ->withErrors(['role' => ['As admin, you are not allowed to create other admins. Please contact a Super Admin.']])
+                ->withErrors(['role' => ['As admin, you are not allowed to edit other admins. Please contact a Super Admin.']])
                 ->withInput();
         }
         $request->validate([
