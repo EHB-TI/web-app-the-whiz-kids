@@ -11,6 +11,7 @@ use Illuminate\Foundation\Auth\ThrottlesLogins;
 
 class LoginController extends Controller
 {
+    public $logger; 
     /*
     |--------------------------------------------------------------------------
     | Login Controller
@@ -39,6 +40,7 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+        $this->logger = \Log::channel('logging_table');
     }
 
     protected $maxAttempts = 5;
@@ -79,8 +81,9 @@ class LoginController extends Controller
             $this->incrementLoginAttempts($request);
 
             $key = $this->throttleKey($request);
-            //$this->logger->info('Login attempt failed at throttleKey: '.$key);
-
+            
+            $this->logger->info('Login attempt failed at throttleKey: '.$key);
+            
             return back()->withErrors([
                 "email" => "The provided credentials do not match our records."
             ]);
