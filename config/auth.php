@@ -114,4 +114,16 @@ return [
 
     'password_timeout' => 10800,
 
+    /*
+    |---------------------------------------------------------------
+    | Throttle Key
+    |---------------------------------------------------------------
+    |
+    | You may choose to block ip address from failed attempts
+    | of a combination of IP and Username
+    |
+    | Supported: "ip", "username|ip"
+    |
+    */
+    'throttle_key' => 'ip',
 ];
