@@ -3,10 +3,16 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\EventController;
+use App\Models\Lockout;
 use App\Providers\RouteServiceProvider;
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 
 class LoginController extends Controller
@@ -24,6 +30,7 @@ class LoginController extends Controller
     */
 
     use AuthenticatesUsers, ThrottlesLogins;
+
 
     /**
      * Where to redirect users after login.
@@ -48,12 +55,25 @@ class LoginController extends Controller
 
     /**
      * @param Request $request
+     * @throws ValidationException
      */
-    public function login(Request $request)
-    {
-        if ($this->hasTooManyLoginAttempts($request)) {
-            $this->fireLockoutEvent($request);
-            return $this->sendLockoutResponse($request);
+    public function login(Request $request) {
+        $key = $this->throttleKey($request);
+
+        $lockout = Lockout::where('throttleKey', $key)->first();
+
+        if ($lockout != null && $lockout->end > Carbon::now()) {
+            $diff = strtotime($lockout->end) - Carbon::now()->getTimestamp();
+
+            if($diff > 60) {
+                $error = "You cannot login for " . ceil($diff / 60) . " minutes";
+            } else {
+                $error = "You cannot login for " . $diff . " seconds";
+            }
+
+            return back()->withErrors([
+                "email" => $error
+            ]);
         }
 
         $credentials = $request->validate([
@@ -64,6 +84,7 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             $this->clearLoginAttempts($request);
             $request->session()->regenerate();
+            $this->clearLoginAttempts($request);
 
             $user = Auth::user();
             if (isset($request["remember"])) {
@@ -78,15 +99,33 @@ class LoginController extends Controller
             }
             return redirect()->route('admin.index');
         }else {
-            $this->incrementLoginAttempts($request);
+
+        $this->incrementLoginAttempts($request);
+
+        if ($this->hasTooManyLoginAttempts($request)) {
+            if($lockout == null) {
+                $lockout = new Lockout();
+                $lockout->throttleKey = $key;
+                $lockout->duration = 3;
+            } else {
+                $lockout->duration = $lockout->duration * 3;
+            }
+            $lockout->end = Carbon::now()->addMinutes($lockout->duration);
+            $lockout->save();
+
+            return back()->withErrors([
+                "email" => "You cannot login for " . $lockout->duration . " minutes"
+            ]);
+        }
 
             $key = $this->throttleKey($request);
             
             $this->logger->info('Login attempt failed at throttleKey: '.$key);
+
+        return back()->withErrors([
+            "email" => "The provided credentials do not match our records."
+        ]);
             
-            return back()->withErrors([
-                "email" => "The provided credentials do not match our records."
-            ]);
         }
     }
 }
