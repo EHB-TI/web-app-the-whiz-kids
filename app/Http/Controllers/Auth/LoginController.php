@@ -4,12 +4,16 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\EventController;
+use App\Models\Lockout;
 use App\Providers\RouteServiceProvider;
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\Response;
 
 class LoginController extends Controller {
     /*
@@ -24,6 +28,7 @@ class LoginController extends Controller {
     */
 
     use AuthenticatesUsers;
+
 
     /**
      * Where to redirect users after login.
@@ -44,8 +49,27 @@ class LoginController extends Controller {
 
     /**
      * @param Request $request
+     * @throws ValidationException
      */
     public function login(Request $request) {
+        $key = $this->throttleKey($request);
+
+        $lockout = Lockout::where('throttleKey', $key)->first();
+
+        if ($lockout != null && $lockout->end > Carbon::now()) {
+            $diff = strtotime($lockout->end) - Carbon::now()->getTimestamp();
+
+            if($diff > 60) {
+                $error = "You cannot login for " . ceil($diff / 60) . " minutes";
+            } else {
+                $error = "You cannot login for " . $diff . " seconds";
+            }
+
+            return back()->withErrors([
+                "email" => $error
+            ]);
+        }
+
         $credentials = $request->validate([
             "email" => ["required", "email"],
             "password" => ["required"]
@@ -53,13 +77,13 @@ class LoginController extends Controller {
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+            $this->clearLoginAttempts($request);
 
             $user = Auth::user();
             if (isset($request["remember"])) {
-                if ($user->role == "admin" || $user->role == "super_admin") 
-                {
+                if ($user->role == "admin" || $user->role == "super_admin") {
                     return redirect()->route('admin.index')
-                    ->with('error', 'Omwille van veiligheidsredenen, is de remember-me functie uitgeschakeld voor admins!');
+                        ->with('error', 'Omwille van veiligheidsredenen, is de remember-me functie uitgeschakeld voor admins!');
                 } else {
                     if (Auth::attempt($credentials, true)) {
                         return redirect()->route('admin.index');
@@ -68,6 +92,25 @@ class LoginController extends Controller {
             }
             return redirect()->route('admin.index');
         }
+
+        $this->incrementLoginAttempts($request);
+
+        if ($this->hasTooManyLoginAttempts($request)) {
+            if($lockout == null) {
+                $lockout = new Lockout();
+                $lockout->throttleKey = $key;
+                $lockout->duration = 3;
+            } else {
+                $lockout->duration = $lockout->duration * 3;
+            }
+            $lockout->end = Carbon::now()->addMinutes($lockout->duration);
+            $lockout->save();
+
+            return back()->withErrors([
+                "email" => "You cannot login for " . $lockout->duration . " minutes"
+            ]);
+        }
+
 
         return back()->withErrors([
             "email" => "The provided credentials do not match our records."
