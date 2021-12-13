@@ -8,14 +8,16 @@ use App\Models\Lockout;
 use App\Providers\RouteServiceProvider;
 use Carbon\Carbon;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Foundation\Auth\ThrottlesLogins;
 
-class LoginController extends Controller {
+class LoginController extends Controller
+{
+    public $logger; 
     /*
     |--------------------------------------------------------------------------
     | Login Controller
@@ -27,7 +29,7 @@ class LoginController extends Controller {
     |
     */
 
-    use AuthenticatesUsers;
+    use AuthenticatesUsers, ThrottlesLogins;
 
 
     /**
@@ -42,10 +44,14 @@ class LoginController extends Controller {
      *
      * @return void
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('guest')->except('logout');
+        $this->logger = \Log::channel('logging_table');
     }
 
+    protected $maxAttempts = 5;
+    protected $decayMinutes = 2;
 
     /**
      * @param Request $request
@@ -76,6 +82,7 @@ class LoginController extends Controller {
         ]);
 
         if (Auth::attempt($credentials)) {
+            $this->clearLoginAttempts($request);
             $request->session()->regenerate();
             $this->clearLoginAttempts($request);
 
@@ -91,7 +98,7 @@ class LoginController extends Controller {
                 }
             }
             return redirect()->route('admin.index');
-        }
+        }else {
 
         $this->incrementLoginAttempts($request);
 
@@ -111,10 +118,14 @@ class LoginController extends Controller {
             ]);
         }
 
+            $key = $this->throttleKey($request);
+            
+            $this->logger->info('Login attempt failed at throttleKey: '.$key);
 
         return back()->withErrors([
             "email" => "The provided credentials do not match our records."
         ]);
+            
+        }
     }
-
 }
