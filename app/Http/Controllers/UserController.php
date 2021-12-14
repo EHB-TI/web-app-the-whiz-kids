@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Str;
 
 use App\Models\User;
@@ -148,7 +149,11 @@ class UserController extends Controller
         if (auth()->user()->role == "admin" || auth()->user()->role == "super_admin") {
             $validator = Validator::make($request->all(), [
                 'current_password' => ['required', new MatchOldPassword],
-                'password' => ['required', 'string', 'min:16', 'pwned', 'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!?@€$#*%_&-]).*$/'],
+                'password' => ['required', 'string', 'min:16', 'pwned', Password::min(16)
+                                                                        ->letters()
+                                                                        ->mixedCase()
+                                                                        ->numbers()
+                                                                        ->symbols()],
                 'confirm_password' => ['same:password'],
             ]);
 
@@ -160,7 +165,11 @@ class UserController extends Controller
         } else {
             $validator = Validator::make($request->all(), [
                 'current_password' => ['required', new MatchOldPassword],
-                'password' => ['required', 'string', 'min:8', 'pwned', 'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!?@€$#*%_&-]).*$/'],
+                'password' => ['required', 'string', 'min:8', 'pwned', Password::min(8)
+                                                                        ->letters()
+                                                                        ->mixedCase()
+                                                                        ->numbers()
+                                                                        ->symbols()],
                 'confirm_password' => ['same:password'],
             ]);
 
