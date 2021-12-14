@@ -1,5 +1,5 @@
 <div class="bg-light border-right" id="sidebar-wrapper">
-    <div class="sidebar-heading">{{ Auth::user()->name }}</div>
+    <div class="sidebar-heading"><a href="{{ route('admin.profile') }}">{{ Auth::user()->name }}</a></div>
     <div class="list-group list-group-flush">
         <a href="{{ route('admin.index') }}" class="list-group-item list-group-item-action bg-light {{ request()->is('admin') ? 'active-item' : '' }}">Dashboard</a>
         <a href="{{ route('admin.events') }}" class="list-group-item list-group-item-action bg-light {{ request()->is('admin/events', 'admin/edit/*', 'admin/create') ? 'active-item' : '' }}">Events</a>

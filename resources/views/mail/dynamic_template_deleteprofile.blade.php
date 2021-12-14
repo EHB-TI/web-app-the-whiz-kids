@@ -1,0 +1,1 @@
+<p>{{ $data->email }}, {{ $data->name }} would like to have their account deleted.</p>

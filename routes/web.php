@@ -8,6 +8,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\QuestionCategoryController;
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Log;
 
 /*
@@ -75,7 +76,19 @@ Route::prefix('admin')->group(function () {
                     return view('admin.index');
                 })
                     ->name('index');
+                
+                /////////////
+                // PROFILE //
+                /////////////
+                
+                Route::get('/profile', [ProfileController::class, 'profile'])
+                    ->name('profile');
 
+                Route::get('/profile/download', [ProfileController::class, 'download'])
+                    ->name('profile.download');
+
+                 Route::get('/profile/delete', [ProfileController::class, 'delete'])
+                    ->name('profile.delete');
                 ///////////
                 // EVENT //
                 ///////////

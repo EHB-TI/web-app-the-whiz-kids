@@ -33,6 +33,8 @@ class SendMail extends Mailable
             return $this->from($this->fromEmail)->replyTo($this->fromEmail, $this->data->name)->subject('New Contact Site')->view('mail.dynamic_template_contact')->with('data', $this->data);
         } elseif ($this->data->type == "usercreate") {
             return $this->from($this->fromEmail)->replyTo($this->fromEmail, $this->data->name)->subject('Account created')->view('mail.dynamic_template_usercreate')->with('data', $this->data);
+        } elseif ($this->data->type == "deleteprofile") {
+            return $this->from($this->fromEmail)->replyTo($this->fromEmail, $this->data->name)->subject('Account delete request')->view('mail.dynamic_template_deleteprofile')->with('data', $this->data);
         }
     }
 }
