@@ -1,5 +1,5 @@
 # Url
-https://osd.thewhizkids.be/
+https://thewhizkids.be/
 # Goal
 De toepassing die wij willen beveiligen is een dynamische website waarop studentenkringen hun evenementen kunnen aanmaken, beheren en dan tonen in een agenda. Beheerders van kringen kunnen de evenementen aanmaken, gewone gebruikers kunnen worden toegevoegd aan een kring en kringen kunnen samenwerken aan evenementen. Ook is er nog een Admin rol die de verschillende kringen en rollen van gebruikers kan beheren, deze functie is voorbehouden voor de hosts van de site.
 # Acceptance criteria
