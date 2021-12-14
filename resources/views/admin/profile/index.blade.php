@@ -5,7 +5,7 @@
     <p>Role: {{$profile->role}}</p>
     <p>Group: {{$profile->group}}</p>
     <p>Email: {{$profile->email}}</p>
-    <p><a href="{{ route('admin.change-password') }}">Change Password</a></p>
+    <p><a href="{{ route('admin.profile.change-password') }}">Change Password</a></p>
     <p><a href="{{ route('admin.profile.download') }}">Ask account information</a></p>
     <p><a href="{{ route('admin.profile.delete') }}">Request to delete account</a></p>
     @error('deleteError')

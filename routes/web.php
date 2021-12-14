@@ -84,6 +84,9 @@ Route::prefix('admin')->group(function () {
                 Route::get('/profile', [ProfileController::class, 'profile'])
                     ->name('profile');
 
+                Route::get('/profile/change_password', [ProfileController::class, 'change_password'])
+                    ->name('profile.change-password');
+
                 Route::get('/profile/download', [ProfileController::class, 'download'])
                     ->name('profile.download');
 

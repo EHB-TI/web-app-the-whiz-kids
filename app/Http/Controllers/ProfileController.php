@@ -24,6 +24,16 @@ class ProfileController extends Controller
         return view('admin.profile.index', ['profile' => $profile]);
     }
 
+    public function change_password(){
+        if (Auth::user()->role == "admin" || Auth::user()->role == "super_admin") {
+            return redirect()->route('admin.change-password')
+                ->with('status', 'Please enter a new password with min 16 characters, including at least one: number, symbol, upper and lowercase characters.');
+        } else {
+            return redirect()->route('admin.change-password')
+                ->with('status', 'Please enter a new password with min 8 characters, including at least one: number, symbol, upper and lowercase characters.');
+        }
+    }
+
     public function download()
     {
         $profile = Auth::user();
