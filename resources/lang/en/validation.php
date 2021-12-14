@@ -131,8 +131,8 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'password' => [
+            'pwned' => 'This new :attribute has been detected in a data-breach',
         ],
     ],
 
