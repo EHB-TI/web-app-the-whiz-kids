@@ -27,6 +27,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\NoSniff::class,
         \App\Http\Middleware\NoCache::class,
         \App\Http\Middleware\ContentPolicy::class,
+        \App\Http\Middleware\XXSProtection::class,
     ];
 
     /**
