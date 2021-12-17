@@ -181,8 +181,11 @@ class UserController extends Controller
         }
 
         User::find(auth()->user()->id)->update(['password' => Hash::make($request->password)]);
-
         $this->logger->info('User updated password, self');
+
+        if (is_null(auth()->user()->email_verified_at)){
+            User::find(auth()->user()->id)->update(['email_verified_at'=> now()]);
+        }
 
         return redirect()->route('admin.index');
     }
