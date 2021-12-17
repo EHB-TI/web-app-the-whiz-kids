@@ -44,7 +44,7 @@
 </div>
 @endif
 @endforeach
-<script nonce="452de1949cc9487f96abaa61a336823b">
+<script nonce="{{ csp_nonce() }}">
     let error_images = document.getElementsByClassName("event-img");
     for (let image of error_images) {
         image.onerror = function(event) {

@@ -9,7 +9,7 @@
             <div id="edit-form" class="extra-form">
                 @include('partials.edit-create')
             </div>
-            <div class="event-preview" id="event-preview" style="display: none;">
+            <div class="event-preview" id="event-preview">
                 <div class="form-group">
                     <label for="bannerFile">Upload Banner File (save changes to preview)</label>
                     <input type="file" class="form-control" id="bannerFile" name="event_banner">
@@ -21,33 +21,53 @@
                     @enderror
                 </div>
                 @if (old('display_name') == 1)
-                <div class="form-group" id="colorGroup" style="display: block;">
+                <div class="form-group" id="colorGroup">
                     <label for="titleColor" id="colorDisplay">Title & Date Color</label>
                     <input id="titleColor" class="form-control" name="title_color" type="text" value="{{ old('title_color') ?? $event->title_color ?? 'rgb(0, 0, 0)' }}" />
                 </div>
+                <style nonce="{{ csp_nonce() }}">
+                    #colorGroup {
+                        display: block;
+                    }
+                </style>
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="displayTitle" name="display_title" value="1" checked>
                     @elseif ($event->display_title ?? false)
                     @if ($event->display_title == "block")
-                    <div class="form-group" id="colorGroup" style="display: block;">
+                    <div class="form-group" id="colorGroup">
                         <label for="titleColor" id="colorDisplay">Title & Date Color</label>
                         <input id="titleColor" class="form-control" name="title_color" type="text" value="{{ old('title_color') ?? $event->title_color ?? 'rgb(0, 0, 0)' }}" />
                     </div>
+                    <style nonce="{{ csp_nonce() }}">
+                        #colorGroup {
+                            display: block;
+                        }
+                    </style>
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="displayTitle" name="display_title" value="1" checked>
                         @else
-                        <div class="form-group" id="colorGroup" style="display: none;">
+                        <div class="form-group" id="colorGroup">
                             <label for="titleColor" id="colorDisplay">Title & Date Color</label>
                             <input id="titleColor" class="form-control" name="title_color" type="text" value="{{ old('title_color') ?? $event->title_color ?? 'rgb(0, 0, 0)' }}" />
                         </div>
+                        <style nonce="{{ csp_nonce() }}">
+                            #colorGroup {
+                                display: none;
+                            }
+                        </style>
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="displayTitle" name="display_title" value="1">
                             @endif
                             @else
-                            <div class="form-group" id="colorGroup" style="display: none;">
+                            <div class="form-group" id="colorGroup">
                                 <label for="titleColor" id="colorDisplay">Title & Date Color</label>
                                 <input id="titleColor" class="form-control" name="title_color" type="text" value="{{ old('title_color') ?? $event->title_color ?? 'rgb(0, 0, 0)' }}" />
                             </div>
+                            <style nonce="{{ csp_nonce() }}">
+                                #colorGroup {
+                                    display: none;
+                                }
+                            </style>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="displayTitle" name="display_title" value="1">
                                 @endif
@@ -63,7 +83,7 @@
                         </div>
         </form>
 
-        <div id="visibility" style="display:none">
+        <div id="visibility">
             <div class="extra-form">
                 <form method="POST" action="{{ route('admin.event.visibility') }}">
                     @csrf
@@ -96,10 +116,10 @@
                     @foreach ($groups as $group)
                     <div class="form-check">
                         <?php
-                            $ids = array();
-                            foreach ($event->groups as $controller) {
-                                array_push($ids, $controller->id);
-                            }
+                        $ids = array();
+                        foreach ($event->groups as $controller) {
+                            array_push($ids, $controller->id);
+                        }
                         ?>
                         <input type="checkbox" class="form-check-input" id="group-{{ $group->name }}" name="groups[]" value="{{ $group->id }}" {{ in_array($group->id, $ids) ? "checked":"" }}>
                         <label for="group-{{ $group->name }}" class="form-check-label">{{ $group->name }}</label>
@@ -116,8 +136,21 @@
             @endif
         </div>
 
-        <div id="ticket" style="display:none">
+        <div id="ticket">
         </div>
+        <style nonce="{{ csp_nonce() }}">
+            #ticket {
+                display: none;
+            }
+
+            #event-preview {
+                display: none;
+            }
+
+            #visibility {
+                display: none;
+            }
+        </style>
     </div>
 
     <!-- load in js -->

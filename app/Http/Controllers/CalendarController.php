@@ -13,7 +13,7 @@ class CalendarController extends Controller
     public function calendar()
     {
         $data = [];
-        $events = Event::all();
+        $events = Event::where('visibility', true)->get();
 
         foreach ($events as $event) {
             $data[] = [

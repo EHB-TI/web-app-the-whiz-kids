@@ -55,7 +55,7 @@
         </div>
     </div>
     @endforeach
-    <script nonce="c1079a6bccc2462cad6c4d94d1c07694">
+    <script nonce="{{ csp_nonce() }}">
         let deleteButtons = document.getElementsByClassName("delete-button")
         for (let deleteButton of deleteButtons){
             deleteButton.addEventListener("click", function(event) {

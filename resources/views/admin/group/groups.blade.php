@@ -35,7 +35,7 @@
                 </td>
             </tr>
             @endforeach
-            <script nonce="bfb620f7816a4119a9961557ba8ce8fe">
+            <script nonce="{{ csp_nonce() }}">
                 let deleteButtons = document.getElementsByClassName("delete-button")
                 for (let deleteButton of deleteButtons){
                     deleteButton.addEventListener("click", function(event) {

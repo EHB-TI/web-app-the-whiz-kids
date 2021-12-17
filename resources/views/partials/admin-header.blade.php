@@ -16,7 +16,7 @@
             </form>
         </ul>
     </div>
-    <script nonce="2d30e9e8aa324eb0a04076c5abaff625">
+    <script nonce="{{ csp_nonce() }}">
         let logout = document.getElementById("logout")
         logout.addEventListener("click", function(event) {
             event.preventDefault();
