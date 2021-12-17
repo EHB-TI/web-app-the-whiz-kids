@@ -14,7 +14,7 @@
         <p id="event-para-3">{!! old('paraBody3') ?? $event->paraBody3 ?? '' !!}</p>
         <p id="event-para-4">{!! old('paraBody4') ?? $event->paraBody4 ?? '' !!}</p>
     </div>
-    <script nonce="028b2129f1304a25a8b81cb8787fb495">
+    <script nonce="b11d7af672c54a8ab27420e4739a988a">
         let error_image = document.getElementById("event-banner")
         error_image.onerror = function(event) {
             this.onerror=null;
