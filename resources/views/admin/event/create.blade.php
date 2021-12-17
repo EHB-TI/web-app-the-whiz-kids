@@ -4,10 +4,18 @@
 <div class="edit-container">
     <form method="POST" action="{{ route('admin.create') }}" enctype="multipart/form-data">
         @include('partials.edit-create')
-        <div class="form-group" id="colorGroup" style="display: none;">
-            <label for="titleColor" id="colorDisplay" style="color:{{ old('title_color') ?? $event->title_color ?? 'rgb(0,0,0)' }};">Title & Date Color</label>
+        <div class="form-group" id="colorGroup">
+            <label for="titleColor" id="colorDisplay">Title & Date Color</label>
             <input id="titleColor" class="form-control" name="title_color" type="text" value="{{ old('title_color') ?? $event->title_color ?? 'rgb(0, 0, 0)' }}" />
         </div>
+        <style nonce="{{ csp_nonce() }}">
+            #colorGroup {
+                display: none;
+            }
+            #colorDisplay {
+                color: {{ old('title_color') ?? $event->title_color ?? 'rgb(0,0,0)' }};
+            }
+        </style>
         <div class="form-check" hidden>
             <input class="form-check-input" type="checkbox" value="" id="displayTitle" name="display_title" value="1">
             <label class="form-check-label" for="displayTitle">

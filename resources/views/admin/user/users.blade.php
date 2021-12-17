@@ -67,7 +67,7 @@
                 @endif
             </tr>
             @endforeach
-            <script nonce="4631e09d23894382bac5f93234be3aec">
+            <script nonce="{{ csp_nonce() }}">
                 let deleteButtons = document.getElementsByClassName("delete-button")
                 for (let deleteButton of deleteButtons){
                     deleteButton.addEventListener("click", function(event) {
