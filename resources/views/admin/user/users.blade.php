@@ -29,7 +29,7 @@
                         <form action="{{ route('admin.delete-user', $user->id) }}" method="POST">
                             @csrf
                             @method('delete')
-                            <button type="submit" onclick="return confirm('Are you sure you want to delete: {{ $user->name }}?')" class="btn btn-danger">Delete</button>
+                            <button type="submit" id="{{ $user->name }}" class="btn btn-danger delete-button">Delete</button>
                         </form>
                     </div>
                 </td>
@@ -44,7 +44,7 @@
                         <form action="{{ route('admin.delete-user', $user->id) }}" method="POST">
                             @csrf
                             @method('delete')
-                            <button type="submit" onclick="return confirm('Are you sure you want to delete: {{ $user->name }}?')" class="btn btn-danger">Delete</button>
+                            <button type="submit" id="{{ $user->name }}" class="btn btn-danger delete-button">Delete</button>
                         </form>
                     </div>
                 </td>
@@ -67,6 +67,14 @@
                 @endif
             </tr>
             @endforeach
+            <script nonce="4631e09d23894382bac5f93234be3aec">
+                let deleteButtons = document.getElementsByClassName("delete-button")
+                for (let deleteButton of deleteButtons){
+                    deleteButton.addEventListener("click", function(event) {
+                        if (!confirm(`Are you sure you want to delete: ${deleteButton.id}?`)) event.preventDefault();
+                    })
+                }
+            </script>
         </tbody>
     </table>
 </div>

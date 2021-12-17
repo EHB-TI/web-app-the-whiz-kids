@@ -28,13 +28,21 @@
                         <form action="{{ route('admin.delete-group', $group->id)  }}" method="POST">
                             @csrf
                             @method('delete')
-                            <button type="submit" onclick="return confirm('Are you sure you want to delete: {{ $group->name }}?')" class="btn btn-danger" >Delete</button>
+                            <button type="submit" id="{{ $group->name }}" class="btn btn-danger delete-button">Delete</button>
                         </form>
                         @endif
                     </div>
                 </td>
             </tr>
             @endforeach
+            <script nonce="bfb620f7816a4119a9961557ba8ce8fe">
+                let deleteButtons = document.getElementsByClassName("delete-button")
+                for (let deleteButton of deleteButtons){
+                    deleteButton.addEventListener("click", function(event) {
+                        if (!confirm(`Are you sure you want to delete: ${deleteButton.id}?`)) event.preventDefault();
+                    })
+                }
+            </script>
         </tbody>
     </table>
 </div>

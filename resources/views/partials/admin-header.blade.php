@@ -8,8 +8,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault();
-                document.getElementById('logout-form').submit();">{{ __('Uitloggen') }}</a>
+                <a class="nav-link" id="logout" href="{{ route('logout') }}">{{ __('Uitloggen') }}</a>
             </li>
 
             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -17,4 +16,11 @@
             </form>
         </ul>
     </div>
+    <script nonce="2d30e9e8aa324eb0a04076c5abaff625">
+        let logout = document.getElementById("logout")
+        logout.addEventListener("click", function(event) {
+            event.preventDefault();
+            document.getElementById('logout-form').submit();
+        })
+    </script>
 </nav>

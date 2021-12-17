@@ -19,7 +19,7 @@
                     <form action="{{ route('admin.categories.destroy', $questionCategory->id) }}" method="POST">
                         @csrf
                         @method('delete')
-                        <button type="submit" onclick="return confirm('Are you sure you want to delete this category, it will also delete all questions!?')" class="btn btn-danger">Delete</button>
+                        <button type="submit" class="btn btn-danger delete-button-cat">Delete</button>
                     </form>
                 </div>
             </div>
@@ -37,7 +37,7 @@
                         <form action="{{ route('admin.questions.destroy', $question->id) }}" method="POST">
                             @csrf
                             @method('delete')
-                            <button type="submit" onclick="return confirm('Are you sure you want to delete this question?')" class="btn btn-danger">Delete</button>
+                            <button type="submit" class="btn btn-danger delete-button-ques">Delete</button>
                         </form>
                     </div>
                 </div>
@@ -46,5 +46,19 @@
         </div>
     </div>
     @endforeach
+    <script nonce="1652439ad94e496b9f74ffcb282d1658">
+        let deleteButtonsCat = document.getElementsByClassName("delete-button-cat")
+        for (let deleteButton of deleteButtonsCat){
+            deleteButton.addEventListener("click", function(event) {
+                if (!confirm('Are you sure you want to delete this category, it will also delete all questions!?')) event.preventDefault();
+            })
+        }
+        let deleteButtonsQues = document.getElementsByClassName("delete-button-ques")
+        for (let deleteButton of deleteButtonsQues){
+            deleteButton.addEventListener("click", function(event) {
+            	if (!confirm('Are you sure you want to delete this question?')) event.preventDefault();
+            })
+        }
+    </script>
 </div>
 @endsection

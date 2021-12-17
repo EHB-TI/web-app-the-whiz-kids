@@ -28,7 +28,7 @@
                 <form action="{{ route('admin.delete-event', $event->id) }}" method="POST">
                     @csrf
                     @method('delete')
-                    <button type="submit" onclick="return confirm('Are you sure you want to delete: {{ $event->name }}?')" class="btn btn-danger">Delete</button>
+                    <button type="submit" id="{{ $event->name }}" class="btn btn-danger delete-button">Delete</button>
                 </form>
             </div>
             @else
@@ -55,5 +55,13 @@
         </div>
     </div>
     @endforeach
+    <script nonce="c1079a6bccc2462cad6c4d94d1c07694">
+        let deleteButtons = document.getElementsByClassName("delete-button")
+        for (let deleteButton of deleteButtons){
+            deleteButton.addEventListener("click", function(event) {
+                if (!confirm(`Are you sure you want to delete: ${deleteButton.id}?`)) event.preventDefault();
+            })
+        }
+    </script>
 </div>
 @endsection
