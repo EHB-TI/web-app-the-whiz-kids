@@ -7,7 +7,7 @@
 <div class="card mb-3">
     <div class="row no-gutters">
         <div class="col-md-4">
-            <img class="card-img event-img" src="{{ asset($event->img_path) }}" alt="Image not found" onerror="this.onerror=null;this.src='{{ asset('storage/preview/preview-image.jpg') }}';" />
+            <img class="card-img event-img" src="{{ asset($event->img_path) }}" alt="Image not found" />
         </div>
         <div class="col-md-8">
             <div class="card-body">
@@ -29,7 +29,7 @@
 <div class="card mb-3">
     <div class="row no-gutters">
         <div class="col-md-4">
-            <img class="card-img event-img" src="{{ asset($event->img_path) }}" alt="Image not found" onerror="this.onerror=null;this.src='{{ asset('storage/preview/preview-image.jpg') }}';" />
+            <img class="card-img event-img" src="{{ asset($event->img_path) }}" alt="Image not found" />
         </div>
         <div class="col-md-8">
             <div class="card-body">
@@ -44,5 +44,13 @@
 </div>
 @endif
 @endforeach
-
+<script nonce="452de1949cc9487f96abaa61a336823b">
+    let error_images = document.getElementsByClassName("event-img");
+    for (let image of error_images) {
+        image.onerror = function(event) {
+            this.onerror=null;
+            this.src="{{ asset('storage/preview/preview-image.jpg') }}";
+        }
+    };
+</script>
 @endsection
