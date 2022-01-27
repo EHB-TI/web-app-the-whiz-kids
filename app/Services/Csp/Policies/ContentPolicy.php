@@ -14,8 +14,6 @@ class ContentPolicy extends Basic
         $this->addDirective(Directive::SCRIPT, '*.jquery.com');
         $this->addDirective(Directive::SCRIPT, '*.jsdelivr.net');
         $this->addDirective(Directive::SCRIPT, 'unpkg.com');
-
-        $this->addDirective(Directive::SCRIPT, 'unsafe-eval');
         
         $this->addDirective(Directive::STYLE, '*.jsdelivr.net');
         $this->addDirective(Directive::STYLE, '*.googleapis.com');
