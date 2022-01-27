@@ -160,7 +160,7 @@ class UserController extends Controller
             if ($validator->fails()) {
                 return redirect()->route('admin.change-password')
                     ->withErrors($validator)
-                    ->with('status', 'Please enter a new password with min 16 characters, including at least one: number, symbol, upper and lowercase characters.');
+                    ->with('status', "Please enter a new password with min 16 characters, including at least one: number, symbol, upper and lowercase characters. Whitespaces aren't allowed");
             }
         } else {
             $validator = Validator::make($request->all(), [
@@ -176,7 +176,7 @@ class UserController extends Controller
             if ($validator->fails()) {
                 return redirect()->route('admin.change-password')
                     ->withErrors($validator)
-                    ->with('status', 'Please enter a new password with min 8 characters, including at least one: number, symbol, upper and lowercase characters.');
+                    ->with('status', "Please enter a new password with min 8 characters, including at least one: number, symbol, upper and lowercase characters. Whitespaces aren't allowed");
             }
         }
 

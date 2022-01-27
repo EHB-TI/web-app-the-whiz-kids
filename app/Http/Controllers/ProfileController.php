@@ -27,10 +27,10 @@ class ProfileController extends Controller
     public function change_password(){
         if (Auth::user()->role == "admin" || Auth::user()->role == "super_admin") {
             return redirect()->route('admin.change-password')
-                ->with('status', 'Please enter a new password with min 16 characters, including at least one: number, symbol, upper and lowercase characters.');
+                ->with('status', "Please enter a new password with min 16 characters, including at least one: number, symbol, upper and lowercase characters. Whitespaces aren't allowed");
         } else {
             return redirect()->route('admin.change-password')
-                ->with('status', 'Please enter a new password with min 8 characters, including at least one: number, symbol, upper and lowercase characters.');
+                ->with('status', "Please enter a new password with min 8 characters, including at least one: number, symbol, upper and lowercase characters. Whitespaces aren't allowed");
         }
     }
 
