@@ -11,7 +11,7 @@
         <a class="nav-link" href="{{ route('content.faq.index') }}">FAQ</a>
       </li>
       <li class="nav-item {{ request()->is('conditions') ? 'active' : '' }}">
-        <a class="nav-link" href="#">Voorwaarden</a>
+        <a class="nav-link" href="{{ route('content.voorwaarden') }}">Voorwaarden</a>
       </li>
     </ul>
   </div>

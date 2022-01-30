@@ -49,6 +49,10 @@ Route::name('content.')->group(function () {
         'index'
     ]);
 
+    Route::get('/voorwaarden', function () {
+        return view('other.voorwaarden');
+    })->name('voorwaarden');
+
     // Calender page
     Route::get('/calendar', [CalendarController::class, 'calendar'])
         ->name('calendar');
