@@ -65,6 +65,9 @@
                             </div>
                         </div>
                     </form>
+                    <div>
+                        <a href="{{ route('content.voorwaarden') }}">Privacyverklaring & Voorwaarden</a>
+                    </div>
                 </div>
             </div>
         </div>

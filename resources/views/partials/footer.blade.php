@@ -8,8 +8,8 @@
             <div class="col-sm-3">
                 <p data-role="title" class="simple-title">OVER ONS</p>
                 <ul class="menu">
-                    <li><a href="">Over deze shop</a></li>
-                    <li class="last"><a href="">Contact</a></li>
+                    <li><a href="{{ route('content.about') }}">Over deze shop</a></li>
+                    <li class="last"><a href="{{ route('content.contact.create') }}">Contact</a></li>
                 </ul>
             </div>
             <div class="col-sm-3">
@@ -18,8 +18,8 @@
             <div class="col-sm-3">
                 <p data-role="title" class="simple-title">KOOP TICKETS</p>
                 <ul class="menu">
-                    <li><a href="">Voorwaarden</a></li>
-                    <li class="last"><a href="">Alle events</a></li>
+                    <li><a href="{{ route('content.voorwaarden') }}">Voorwaarden</a></li>
+                    <li class="last"><a href="{{ route('content.index') }}">Alle events</a></li>
                 </ul>
             </div>
         </div>
